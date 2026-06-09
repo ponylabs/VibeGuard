@@ -8,6 +8,7 @@
 
 - user-approved: VibeGuard 仓库根目录可以保留并追踪 .vibeguard/，不再通过 .gitignore 忽略。
 - observed-in-code: 安装器把 templates/<lang>/.vibeguard/ 复制到目标项目根目录，见 README.md 和 install/*.sh。
+- user-approved: 工具安装器保持可直接 `curl | sh` 的 standalone 文件，但由 install/installer.template.sh 和 install/generate-installers.sh 生成，降低重复维护成本。
 
 ## Dependency Decisions
 
@@ -27,6 +28,7 @@
 ## Rejected Options
 
 - user-approved: 暂不采用纯手动 release 流程。
+- user-approved: 不拆出运行时 sourced shell library；原因是 `curl | sh` 安装入口必须保持单文件可用。
 
 模板：
 

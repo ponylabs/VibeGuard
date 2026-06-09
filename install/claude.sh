@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eu
 
+# Generated from install/installer.template.sh by install/generate-installers.sh.
+# Edit the template, then regenerate the tool-specific installers.
+
 TOOL_NAME="Claude Code"
 ENTRY_FILES="CLAUDE.md"
 DEFAULT_VERSION="main"

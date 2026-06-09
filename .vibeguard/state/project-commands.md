@@ -13,11 +13,13 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 ## Development
 
 - observed-in-code: 本项目没有本地开发服务命令；仓库主体是 shell 安装器和 Markdown 模板。
+- observed-in-code: installer generation command is `sh install/generate-installers.sh`.
 
 ## Static Checks
 
-- observed-in-code: shell syntax check command is `sh -n install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh`.
-- observed-in-code: release workflow runs shell syntax check with `sh -n install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh`, see .github/workflows/release.yml.
+- observed-in-code: shell syntax check command is `sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh`.
+- observed-in-code: release workflow runs shell syntax check with `sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh`, see .github/workflows/release.yml.
+- observed-in-code: installer sync check is part of `sh tests/installers_test.sh`; it compares installer diffs before and after `sh install/generate-installers.sh`.
 
 ## Tests
 

@@ -4,8 +4,8 @@ set -eu
 # Generated from install/installer.template.sh by install/generate-installers.sh.
 # Edit the template, then regenerate the tool-specific installers.
 
-TOOL_NAME="Cursor"
-ENTRY_FILES=".cursor/rules/vibeguard.mdc"
+TOOL_NAME="__TOOL_NAME__"
+ENTRY_FILES="__ENTRY_FILES__"
 DEFAULT_VERSION="main"
 REPO_OWNER="ponylabs"
 REPO_NAME="VibeGuard"
@@ -22,9 +22,9 @@ ENTRY_LINE='Before making changes, read and follow `.vibeguard/README.md`.'
 
 usage() {
   cat <<EOF
-Usage: sh install/cursor.sh [options]
+Usage: sh __SCRIPT_PATH__ [options]
 
-Installs VibeGuard into the current project and injects .cursor/rules/vibeguard.mdc.
+Installs VibeGuard into the current project and injects __USAGE_TARGET__.
 
 Options:
   --version <ref>  Install from a branch or tag. Defaults to main.

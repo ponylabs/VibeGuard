@@ -42,6 +42,19 @@ assert_marker_count() {
   [ "$count" = "$2" ] || fail "expected $1 marker count $2, got $count"
 }
 
+assert_generated_installers_current() {
+  before="$TMP_ROOT/generated-before"
+  after="$TMP_ROOT/generated-after"
+
+  git -C "$ROOT_DIR" diff -- install/codex.sh install/claude.sh install/cursor.sh install/all.sh > "$before"
+  sh "$ROOT_DIR/install/generate-installers.sh"
+  git -C "$ROOT_DIR" diff -- install/codex.sh install/claude.sh install/cursor.sh install/all.sh > "$after"
+
+  if ! cmp -s "$before" "$after"; then
+    fail "generated installers are out of date; run sh install/generate-installers.sh"
+  fi
+}
+
 make_project() {
   dir=$(mktemp -d "$TMP_ROOT/project.XXXXXX")
   printf '%s\n' "$dir"
@@ -258,6 +271,7 @@ test_rerun_does_not_duplicate_marker() {
 }
 
 setup_fake_download
+assert_generated_installers_current
 
 test_codex_installs_only_agents
 test_lang_zh_installs_chinese_template

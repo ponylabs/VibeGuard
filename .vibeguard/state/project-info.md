@@ -22,6 +22,7 @@
 ## Key Directories
 
 - observed-in-code: 面向用户的安装脚本位于 install/。
+- observed-in-code: install/codex.sh、install/claude.sh、install/cursor.sh、install/all.sh 由 install/installer.template.sh 和 install/generate-installers.sh 生成。
 - observed-in-code: 安装器测试位于 tests/installers_test.sh。
 - observed-in-code: 可安装模板位于 templates/en/.vibeguard/ 和 templates/zh/.vibeguard/，见 README.md。
 - observed-in-code: 本仓库自己的治理状态位于根目录 .vibeguard/。

@@ -12,7 +12,7 @@
 
 ## Verification Gaps
 
-- unresolved-risk: release workflow 尚未在真实 GitHub tag push 上跑过。Impact: 首次发布前仍需确认 GitHub Release 权限和生成说明符合预期。Next: 推送首个 `v*` tag 后检查 Actions 与 Release 页面。
+尚未记录。
 
 ## Test Gaps
 

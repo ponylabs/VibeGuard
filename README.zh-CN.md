@@ -12,7 +12,7 @@ VibeGuard 为 Codex、Claude Code、Cursor 等 AI 编码工具提供一套可安
 templates/
   en/.vibeguard/  # 英文治理模板，默认安装
   zh/.vibeguard/  # 中文治理模板
-install/          # 面向不同 AI 工具的安装脚本
+install/          # 由共享模板生成的工具安装脚本
 tests/            # 安装器测试
 ```
 

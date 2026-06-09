@@ -12,7 +12,7 @@ VibeGuard provides installable project rules and state templates for AI coding t
 templates/
   en/.vibeguard/  # English governance template, installed by default
   zh/.vibeguard/  # Chinese governance template
-install/          # Tool-specific installers
+install/          # Tool-specific installers generated from a shared template
 tests/            # Installer tests
 ```
 
