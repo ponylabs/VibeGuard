@@ -74,3 +74,22 @@ curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/cod
 ```
 
 Bootstrap 是一次性的项目体检或技术栈选型流程。它会把有证据支撑的项目事实、固定命令、人类批准的决策和开放风险记录到 `.vibeguard/state/`。
+
+## 发布
+
+发布通过版本 tag 触发，并且只有自动验证通过后才创建 GitHub Release。
+
+使用语义化版本 tag：
+
+```sh
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+推送 `v*` tag 后会运行 release workflow。该 workflow 会检查 shell 语法、运行安装器测试，然后创建带自动生成说明的 GitHub Release。
+
+用户可以通过 `--version` 安装指定 release：
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/codex.sh | sh -s -- --version v0.1.0
+```

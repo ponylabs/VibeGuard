@@ -74,3 +74,22 @@ If this is a new project, guide me through stack selection before writing state.
 ```
 
 Bootstrap is a one-time project audit or stack selection flow. It records evidence-backed project facts, fixed commands, human-approved decisions, and open risks under `.vibeguard/state/`.
+
+## Release
+
+Releases are created from version tags after automated verification passes.
+
+Use semantic version tags:
+
+```sh
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+Pushing a `v*` tag runs the release workflow. The workflow checks shell syntax, runs installer tests, and then creates a GitHub Release with generated notes.
+
+Users can install a specific release with `--version`:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/codex.sh | sh -s -- --version v0.1.0
+```
