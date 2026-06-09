@@ -12,7 +12,8 @@
 
 ## Dependency Decisions
 
-- observed-in-code: 当前项目没有运行时或开发依赖清单；安装器使用系统 shell 和常见 Unix 工具，见 install/*.sh。
+- user-approved: 使用 uv 初始化项目 Python 环境，用于后续需要 Python helper 或图片处理等工具脚本的场景。
+- observed-in-code: 当前 Python 依赖清单为空；安装器仍使用系统 shell 和常见 Unix 工具，见 pyproject.toml、uv.lock 和 install/*.sh。
 
 ## Testing Decisions
 

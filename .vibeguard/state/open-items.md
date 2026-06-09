@@ -16,7 +16,7 @@
 
 ## Test Gaps
 
-- unresolved-risk: 当前测试覆盖安装器核心行为，但没有真实网络下载端到端验证。Impact: GitHub archive 或 raw URL 变化可能只在真实安装时暴露。Next: release 前手动跑一次真实安装命令或在 CI 中增加受控 smoke test。
+- unresolved-risk: 当前测试覆盖安装器核心行为，且 Codex main 真实网络安装已手动 smoke 通过；但 CI 尚未自动覆盖真实网络安装，也未覆盖 Claude/Cursor/all 或 tag 安装。Impact: GitHub archive、raw URL 或工具入口差异可能只在真实安装时暴露。Next: 在 CI 中增加受控 smoke test，或 release 前手动验证各入口和 tag 安装。
 
 ## Follow-Ups
 

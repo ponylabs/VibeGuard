@@ -12,11 +12,14 @@
 
 ## Runtime And Environment
 
-- observed-in-code: 本项目未声明 Node、Python、Go、Rust、Java 等运行时版本文件；安装器依赖系统 shell 与常见 Unix 工具，见 install/*.sh。
+- observed-in-code: 本项目声明 Python >=3.12，并通过 .python-version 固定 3.12，见 pyproject.toml 和 .python-version。
+- observed-in-code: 安装器依赖系统 shell 与常见 Unix 工具，见 install/*.sh。
 
 ## Package And Tooling
 
-- observed-in-code: 本项目没有 package manager 或依赖锁文件；没有 package.json、pyproject.toml、go.mod 或 Cargo.toml。
+- user-approved: 使用 uv 管理项目 Python 环境和依赖配置，见 pyproject.toml、.python-version 和 uv.lock。
+- observed-in-code: 当前 Python 依赖清单为空，见 pyproject.toml 和 uv.lock。
+- observed-in-code: 本项目没有 Node、Go、Rust、Java 等依赖清单或锁文件；未发现 package.json、go.mod 或 Cargo.toml。
 - observed-in-code: 安装器运行时需要 curl、tar、mktemp、cp、rm、mkdir、grep、sed、awk、dirname、find，见 install/*.sh。
 
 ## Key Directories
@@ -25,6 +28,7 @@
 - observed-in-code: install/codex.sh、install/claude.sh、install/cursor.sh、install/all.sh 由 install/installer.template.sh 和 install/generate-installers.sh 生成。
 - observed-in-code: 安装器测试位于 tests/installers_test.sh。
 - observed-in-code: 可安装模板位于 templates/en/.vibeguard/ 和 templates/zh/.vibeguard/，见 README.md。
+- observed-in-code: README 视觉素材位于 docs/assets/，包含源品牌 PNG 和用于 README 展示的 logo/banner SVG。
 - observed-in-code: 本仓库自己的治理状态位于根目录 .vibeguard/。
 
 ## Module Boundaries

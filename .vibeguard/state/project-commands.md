@@ -8,12 +8,14 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 
 ## Install
 
-- observed-in-code: 本项目没有依赖安装命令；未发现 package manager 或依赖锁文件。
+- observed-in-code: Python 环境同步命令是 `uv sync`，见 pyproject.toml 和 uv.lock。
+- observed-in-code: 当前 Python 依赖清单为空，见 pyproject.toml 和 uv.lock。
 
 ## Development
 
 - observed-in-code: 本项目没有本地开发服务命令；仓库主体是 shell 安装器和 Markdown 模板。
 - observed-in-code: installer generation command is `sh install/generate-installers.sh`.
+- observed-in-code: Python helper scripts should be run with `uv run <command>` so they use the pinned Python 3.12 environment.
 
 ## Static Checks
 
@@ -34,3 +36,5 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 
 - verified-by-command: `sh tests/installers_test.sh` passed.
 - verified-by-command: `sh -n install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh` passed.
+- verified-by-command: `uv sync --offline` passed.
+- verified-by-command: `uv run --offline python --version` printed Python 3.12.13.
