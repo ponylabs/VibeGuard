@@ -20,12 +20,14 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 ## Static Checks
 
 - observed-in-code: shell syntax check command is `sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh`.
+- observed-in-code: CI runs shell syntax checks on pull requests and pushes to main, see .github/workflows/ci.yml.
 - observed-in-code: release workflow runs shell syntax check with `sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh`, see .github/workflows/release.yml.
 - observed-in-code: installer sync check is part of `sh tests/installers_test.sh`; it compares installer diffs before and after `sh install/generate-installers.sh`.
 
 ## Tests
 
 - observed-in-code: installer test command is `sh tests/installers_test.sh`, from tests/installers_test.sh.
+- observed-in-code: CI runs installer tests on pull requests and pushes to main, see .github/workflows/ci.yml.
 - observed-in-code: release workflow runs installer tests with `sh tests/installers_test.sh`, see .github/workflows/release.yml.
 
 ## Build

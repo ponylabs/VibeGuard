@@ -8,7 +8,7 @@
 
 ## Risks
 
-- unresolved-risk: 尚未配置 PR/main 分支 CI；当前 GitHub Actions 只在 `v*` tag release 时运行验证。Impact: 普通提交和 PR 仍无法自动拦截安装器回归。Next: 需要持续集成时，增加 push/PR workflow 复用 release 中的 shell 语法检查和 installer tests。
+尚未记录。
 
 ## Verification Gaps
 

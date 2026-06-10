@@ -9,6 +9,7 @@ FAKE_ARCHIVE="$TMP_ROOT/vibeguard.tar.gz"
 FAKE_CURL_LOG="$TMP_ROOT/curl.log"
 
 START_MARKER='<!-- VIBEGUARD:START -->'
+END_MARKER='<!-- VIBEGUARD:END -->'
 ENTRY_LINE='Before making changes, read and follow `.vibeguard/README.md`.'
 
 cleanup() {
@@ -40,6 +41,17 @@ assert_not_contains() {
 assert_marker_count() {
   count=$(grep -F -c "$START_MARKER" "$1" 2>/dev/null || true)
   [ "$count" = "$2" ] || fail "expected $1 marker count $2, got $count"
+}
+
+test_ci_workflow_runs_installer_checks() {
+  workflow="$ROOT_DIR/.github/workflows/ci.yml"
+
+  assert_exists "$workflow"
+  assert_contains "$workflow" 'pull_request:'
+  assert_contains "$workflow" 'branches:'
+  assert_contains "$workflow" 'main'
+  assert_contains "$workflow" 'sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh'
+  assert_contains "$workflow" 'sh tests/installers_test.sh'
 }
 
 assert_generated_installers_current() {
@@ -270,9 +282,42 @@ test_rerun_does_not_duplicate_marker() {
   assert_marker_count "$project/AGENTS.md" 1
 }
 
+test_update_preserves_user_content_around_managed_block() {
+  project=$(make_project)
+  {
+    printf 'custom before\n'
+    printf '%s\n' "$START_MARKER"
+    printf 'old managed entry\n'
+    printf '%s\n' "$END_MARKER"
+    printf 'custom after\n'
+  } > "$project/AGENTS.md"
+  reset_curl_log
+
+  run_installer install/codex.sh "$project"
+
+  assert_contains "$project/AGENTS.md" 'custom before'
+  assert_contains "$project/AGENTS.md" "$ENTRY_LINE"
+  assert_contains "$project/AGENTS.md" 'custom after'
+  assert_not_contains "$project/AGENTS.md" 'old managed entry'
+  assert_marker_count "$project/AGENTS.md" 1
+}
+
+test_all_rerun_does_not_duplicate_markers() {
+  project=$(make_project)
+  reset_curl_log
+
+  run_installer install/all.sh "$project"
+  run_installer install/all.sh "$project" --force
+
+  assert_marker_count "$project/AGENTS.md" 1
+  assert_marker_count "$project/CLAUDE.md" 1
+  assert_marker_count "$project/.cursor/rules/vibeguard.mdc" 1
+}
+
 setup_fake_download
 assert_generated_installers_current
 
+test_ci_workflow_runs_installer_checks
 test_codex_installs_only_agents
 test_lang_zh_installs_chinese_template
 test_invalid_lang_fails_before_download
@@ -285,5 +330,7 @@ test_force_replaces_existing_vibeguard
 test_incomplete_marker_blocks_before_copy
 test_version_tag_uses_tag_archive_url
 test_rerun_does_not_duplicate_marker
+test_update_preserves_user_content_around_managed_block
+test_all_rerun_does_not_duplicate_markers
 
 printf 'ok - installer tests passed\n'
