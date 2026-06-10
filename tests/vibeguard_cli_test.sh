@@ -83,10 +83,20 @@ test_readmes_explain_python_helper_and_permission_boundary() {
   assert_contains "$zh_readme" '.vibeguard/state/project-commands.md'
 }
 
+test_state_schema_version_is_documented() {
+  assert_exists "$ROOT_DIR/templates/en/.vibeguard/state/.schema-version"
+  assert_exists "$ROOT_DIR/templates/zh/.vibeguard/state/.schema-version"
+  assert_contains "$ROOT_DIR/templates/en/.vibeguard/state/.schema-version" '1'
+  assert_contains "$ROOT_DIR/templates/zh/.vibeguard/state/.schema-version" '1'
+  assert_contains "$ROOT_DIR/templates/en/.vibeguard/state/state-index.md" 'state directory schema version'
+  assert_contains "$ROOT_DIR/templates/zh/.vibeguard/state/state-index.md" 'state 结构版本'
+}
+
 command -v "$PYTHON" >/dev/null 2>&1 || fail "missing Python interpreter: $PYTHON"
 
 test_status_script_reports_template_setup
 test_audit_script_flags_dependency_and_lock_changes
 test_readmes_explain_python_helper_and_permission_boundary
+test_state_schema_version_is_documented
 
 printf 'ok - vibeguard cli tests passed\n'

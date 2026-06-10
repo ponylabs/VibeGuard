@@ -4,6 +4,8 @@ This directory records evidence-backed state for the current project.
 
 General rules live in `.vibeguard/rules/`. Do not put general rules in state files.
 
+`.schema-version` records the state directory schema version. The current version is `1`; it is only for future update scripts to compare local state structure with template state structure. It is not a rules version and does not require automatic migration.
+
 ## Reading Rules
 
 Read only this file by default.
