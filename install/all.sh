@@ -15,6 +15,7 @@ LANGUAGE="en"
 FORCE=0
 DRY_RUN=0
 YES=0
+UPDATE=0
 
 START_MARKER='<!-- VIBEGUARD:START -->'
 END_MARKER='<!-- VIBEGUARD:END -->'
@@ -29,6 +30,7 @@ Installs VibeGuard into the current project and injects Codex, Claude Code, and 
 Options:
   --version <ref>  Install from a branch or tag. Defaults to main.
   --lang <en|zh>   Install template language. Defaults to en.
+  --update         Update VibeGuard rules, helper scripts, and entry block; preserve existing state.
   --force          Replace an existing .vibeguard directory.
   --dry-run        Print planned actions without changing files.
   --yes            Skip interactive confirmation prompts.
@@ -59,6 +61,10 @@ while [ "$#" -gt 0 ]; do
       ;;
     --force)
       FORCE=1
+      shift
+      ;;
+    --update)
+      UPDATE=1
       shift
       ;;
     --dry-run)
@@ -176,6 +182,17 @@ find_vibeguard_dir() {
   find "$EXTRACT_DIR" -type d -path "*/templates/$LANGUAGE/.vibeguard" -print | sed -n '1p'
 }
 
+read_state_schema() {
+  file=$1
+  if [ -f "$file" ]; then
+    schema=$(sed -n '1{s/[[:space:]]//g;p;q;}' "$file")
+    [ -n "$schema" ] || schema="empty"
+    printf '%s\n' "$schema"
+  else
+    printf 'missing\n'
+  fi
+}
+
 install_vibeguard_dir() {
   if [ -d .vibeguard ]; then
     [ "$FORCE" -eq 1 ] || die ".vibeguard already exists; use --force to replace it"
@@ -183,6 +200,29 @@ install_vibeguard_dir() {
   fi
 
   cp -R "$SOURCE_VIBEGUARD" ./.vibeguard
+}
+
+copy_missing_state_files() {
+  [ -d "$SOURCE_VIBEGUARD/state" ] || return 0
+  mkdir -p .vibeguard/state
+
+  for source_state in "$SOURCE_VIBEGUARD"/state/* "$SOURCE_VIBEGUARD"/state/.[!.]*; do
+    [ -f "$source_state" ] || continue
+    state_name=${source_state##*/}
+    [ -e ".vibeguard/state/$state_name" ] || cp "$source_state" ".vibeguard/state/$state_name"
+  done
+}
+
+update_vibeguard_dir() {
+  [ -d .vibeguard ] || die ".vibeguard does not exist; run install without --update first"
+
+  for path in README.md bootstrap.md rules bin; do
+    [ -e "$SOURCE_VIBEGUARD/$path" ] || continue
+    rm -rf ".vibeguard/$path"
+    cp -R "$SOURCE_VIBEGUARD/$path" ".vibeguard/$path"
+  done
+
+  copy_missing_state_files
 }
 
 write_block() {
@@ -233,8 +273,19 @@ for entry_file in $ENTRY_FILES; do
   preflight_entry "$entry_file"
 done
 
+if [ "$UPDATE" -eq 1 ] && [ "$FORCE" -eq 1 ]; then
+  die "--update cannot be combined with --force"
+fi
+
 if [ "$DRY_RUN" -eq 1 ]; then
-  if [ -d .vibeguard ]; then
+  if [ "$UPDATE" -eq 1 ]; then
+    if [ -d .vibeguard ]; then
+      printf '.vibeguard: would update %s template files from VibeGuard %s archive\n' "$LANGUAGE" "$VERSION"
+      printf '.vibeguard/state: would preserve existing state files and copy missing state template files\n'
+    else
+      printf '.vibeguard: missing; update would stop without installing\n'
+    fi
+  elif [ -d .vibeguard ]; then
     if [ "$FORCE" -eq 1 ]; then
       printf '.vibeguard: would replace existing directory\n'
     else
@@ -249,7 +300,11 @@ if [ "$DRY_RUN" -eq 1 ]; then
   exit 0
 fi
 
-[ ! -d .vibeguard ] || [ "$FORCE" -eq 1 ] || die ".vibeguard already exists; use --force to replace it"
+if [ "$UPDATE" -eq 1 ]; then
+  [ -d .vibeguard ] || die ".vibeguard does not exist; run install without --update first"
+else
+  [ ! -d .vibeguard ] || [ "$FORCE" -eq 1 ] || die ".vibeguard already exists; use --force to replace it"
+fi
 
 confirm
 
@@ -265,12 +320,22 @@ tar -xzf "$ARCHIVE_FILE" -C "$EXTRACT_DIR" || die "failed to extract downloaded 
 SOURCE_VIBEGUARD=$(find_vibeguard_dir)
 [ -n "$SOURCE_VIBEGUARD" ] || die "downloaded archive does not contain templates/$LANGUAGE/.vibeguard"
 
-install_vibeguard_dir
+if [ "$UPDATE" -eq 1 ]; then
+  LOCAL_STATE_SCHEMA=$(read_state_schema ".vibeguard/state/.schema-version")
+  TEMPLATE_STATE_SCHEMA=$(read_state_schema "$SOURCE_VIBEGUARD/state/.schema-version")
+  update_vibeguard_dir
+else
+  install_vibeguard_dir
+fi
 for entry_file in $ENTRY_FILES; do
   inject_entry "$entry_file"
 done
 
-printf 'VibeGuard installed for %s from %s (lang: %s)\n' "$TOOL_NAME" "$DOWNLOADED_URL" "$LANGUAGE"
+if [ "$UPDATE" -eq 1 ]; then
+  printf 'VibeGuard updated for %s from %s (lang: %s; state schema: local %s, template %s)\n' "$TOOL_NAME" "$DOWNLOADED_URL" "$LANGUAGE" "$LOCAL_STATE_SCHEMA" "$TEMPLATE_STATE_SCHEMA"
+else
+  printf 'VibeGuard installed for %s from %s (lang: %s)\n' "$TOOL_NAME" "$DOWNLOADED_URL" "$LANGUAGE"
+fi
 if [ "$LANGUAGE" = "zh" ]; then
   printf '\n下一步：\n'
   printf '让 AI 读取 `.vibeguard/README.md` 并运行 VibeGuard Bootstrap。\n'

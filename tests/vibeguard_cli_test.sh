@@ -20,7 +20,7 @@ assert_exists() {
 }
 
 assert_contains() {
-  grep -F "$2" "$1" >/dev/null 2>&1 || fail "expected $1 to contain $2"
+  grep -F -- "$2" "$1" >/dev/null 2>&1 || fail "expected $1 to contain $2"
 }
 
 make_project() {
@@ -83,6 +83,18 @@ test_readmes_explain_python_helper_and_permission_boundary() {
   assert_contains "$zh_readme" '.vibeguard/state/project-commands.md'
 }
 
+test_readmes_explain_update_mode() {
+  en_readme="$ROOT_DIR/templates/en/.vibeguard/README.md"
+  zh_readme="$ROOT_DIR/templates/zh/.vibeguard/README.md"
+
+  assert_contains "$ROOT_DIR/README.md" '--update'
+  assert_contains "$ROOT_DIR/README.zh-CN.md" '--update'
+  assert_contains "$en_readme" '--update'
+  assert_contains "$en_readme" 'preserves existing `.vibeguard/state/` files'
+  assert_contains "$zh_readme" '--update'
+  assert_contains "$zh_readme" '保留已有 `.vibeguard/state/` 文件'
+}
+
 test_state_schema_version_is_documented() {
   assert_exists "$ROOT_DIR/templates/en/.vibeguard/state/.schema-version"
   assert_exists "$ROOT_DIR/templates/zh/.vibeguard/state/.schema-version"
@@ -97,6 +109,7 @@ command -v "$PYTHON" >/dev/null 2>&1 || fail "missing Python interpreter: $PYTHO
 test_status_script_reports_template_setup
 test_audit_script_flags_dependency_and_lock_changes
 test_readmes_explain_python_helper_and_permission_boundary
+test_readmes_explain_update_mode
 test_state_schema_version_is_documented
 
 printf 'ok - vibeguard cli tests passed\n'

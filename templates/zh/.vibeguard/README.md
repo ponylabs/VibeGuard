@@ -35,6 +35,20 @@ python3 .vibeguard/bin/vibeguard-audit.py
 
 如果辅助脚本无法运行，请继续使用下面的手动规则流程。
 
+## 更新 VibeGuard
+
+当 VibeGuard 发布新版本后，可以在项目根目录重新运行对应安装器，并传入 `--update` 来刷新本项目的 VibeGuard。
+
+Codex 示例：
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/codex.sh | sh -s -- --update
+```
+
+`--update` 会刷新 VibeGuard README、bootstrap、rules、辅助脚本和 AI 入口 managed block。它会保留已有 `.vibeguard/state/` 文件，只复制缺失的 state 模板文件。
+
+更新输出会报告本地 state schema 和模板 state schema 的版本。当前 VibeGuard 只报告 schema 差异，不会自动迁移 state。
+
 ## 日常任务
 
 请按以下顺序阅读：

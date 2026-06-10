@@ -31,11 +31,11 @@ assert_not_exists() {
 }
 
 assert_contains() {
-  grep -F "$2" "$1" >/dev/null 2>&1 || fail "expected $1 to contain $2"
+  grep -F -- "$2" "$1" >/dev/null 2>&1 || fail "expected $1 to contain $2"
 }
 
 assert_not_contains() {
-  ! grep -F "$2" "$1" >/dev/null 2>&1 || fail "expected $1 not to contain $2"
+  ! grep -F -- "$2" "$1" >/dev/null 2>&1 || fail "expected $1 not to contain $2"
 }
 
 assert_marker_count() {
@@ -77,14 +77,20 @@ reset_curl_log() {
 }
 
 setup_fake_download() {
-  mkdir -p "$FAKE_BIN" "$FAKE_SRC/VibeGuard-main/.vibeguard" "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/bin" "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/state" "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/bin" "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/state"
+  mkdir -p "$FAKE_BIN" "$FAKE_SRC/VibeGuard-main/.vibeguard" "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/bin" "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/rules" "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/state" "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/bin" "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/rules" "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/state"
   printf '# Wrong Root VibeGuard\n' > "$FAKE_SRC/VibeGuard-main/.vibeguard/README.md"
   printf '# VibeGuard\n中文模板\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/README.md"
   printf '# VibeGuard\nEnglish template\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/README.md"
   printf '# Bootstrap\n中文初始化\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/bootstrap.md"
   printf '# Bootstrap\nEnglish bootstrap\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/bootstrap.md"
+  printf '# Task Flow\n中文规则\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/rules/task-flow.md"
+  printf '# Task Flow\nEnglish rules\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/rules/task-flow.md"
   printf '1\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/state/.schema-version"
   printf '1\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/state/.schema-version"
+  printf '# Project Info\n模板事实\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/state/project-info.md"
+  printf '# Project Info\nTemplate facts\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/state/project-info.md"
+  printf '# Open Items\n模板事项\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/state/open-items.md"
+  printf '# Open Items\nTemplate items\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/state/open-items.md"
   printf '# status\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/bin/vibeguard-status.py"
   printf '# audit\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/bin/vibeguard-audit.py"
   printf '# status\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/bin/vibeguard-status.py"
@@ -233,6 +239,20 @@ test_dry_run_changes_nothing() {
   [ ! -s "$FAKE_CURL_LOG" ] || fail "dry-run should not download"
 }
 
+test_update_dry_run_changes_nothing() {
+  project=$(make_project)
+  mkdir -p "$project/.vibeguard"
+  printf 'old readme\n' > "$project/.vibeguard/README.md"
+  reset_curl_log
+
+  run_installer install/codex.sh "$project" --update --dry-run > "$TMP_ROOT/update-dry-run.out"
+
+  assert_contains "$TMP_ROOT/update-dry-run.out" 'would update en template files'
+  assert_contains "$project/.vibeguard/README.md" 'old readme'
+  assert_not_exists "$project/AGENTS.md"
+  [ ! -s "$FAKE_CURL_LOG" ] || fail "update dry-run should not download"
+}
+
 test_existing_vibeguard_requires_force() {
   project=$(make_project)
   mkdir -p "$project/.vibeguard"
@@ -258,6 +278,53 @@ test_force_replaces_existing_vibeguard() {
   assert_contains "$project/.vibeguard/README.md" '# VibeGuard'
   assert_not_contains "$project/.vibeguard/README.md" 'old'
   assert_exists "$project/AGENTS.md"
+}
+
+test_update_refreshes_template_files_and_preserves_state() {
+  project=$(make_project)
+  mkdir -p "$project/.vibeguard/rules" "$project/.vibeguard/state"
+  printf 'old readme\n' > "$project/.vibeguard/README.md"
+  printf 'old bootstrap\n' > "$project/.vibeguard/bootstrap.md"
+  printf 'old rules\n' > "$project/.vibeguard/rules/task-flow.md"
+  printf 'user project facts\n' > "$project/.vibeguard/state/project-info.md"
+  printf '0\n' > "$project/.vibeguard/state/.schema-version"
+  printf 'custom before\n' > "$project/AGENTS.md"
+  reset_curl_log
+
+  run_installer install/codex.sh "$project" --update > "$TMP_ROOT/update.out"
+
+  assert_contains "$project/.vibeguard/README.md" 'English template'
+  assert_contains "$project/.vibeguard/bootstrap.md" 'English bootstrap'
+  assert_contains "$project/.vibeguard/rules/task-flow.md" 'English rules'
+  assert_exists "$project/.vibeguard/bin/vibeguard-status.py"
+  assert_exists "$project/.vibeguard/bin/vibeguard-audit.py"
+  assert_contains "$project/.vibeguard/state/project-info.md" 'user project facts'
+  assert_contains "$project/.vibeguard/state/open-items.md" 'Template items'
+  assert_contains "$project/.vibeguard/state/.schema-version" '0'
+  assert_contains "$project/AGENTS.md" 'custom before'
+  assert_contains "$project/AGENTS.md" "$ENTRY_LINE"
+  assert_marker_count "$project/AGENTS.md" 1
+  assert_contains "$TMP_ROOT/update.out" 'state schema: local 0, template 1'
+}
+
+test_update_requires_existing_vibeguard() {
+  project=$(make_project)
+  reset_curl_log
+
+  if run_installer install/codex.sh "$project" --update >/dev/null 2>&1; then
+    fail "expected update to fail without .vibeguard"
+  fi
+
+  assert_not_exists "$project/.vibeguard"
+  [ ! -s "$FAKE_CURL_LOG" ] || fail "missing .vibeguard should block update before download"
+}
+
+test_help_mentions_update() {
+  project=$(make_project)
+
+  run_installer install/codex.sh "$project" --help > "$TMP_ROOT/help.out"
+
+  assert_contains "$TMP_ROOT/help.out" '--update'
 }
 
 test_incomplete_marker_blocks_before_copy() {
@@ -343,8 +410,12 @@ test_claude_installs_only_claude
 test_cursor_installs_cursor_rule
 test_all_installs_all_entries
 test_dry_run_changes_nothing
+test_update_dry_run_changes_nothing
 test_existing_vibeguard_requires_force
 test_force_replaces_existing_vibeguard
+test_update_refreshes_template_files_and_preserves_state
+test_update_requires_existing_vibeguard
+test_help_mentions_update
 test_incomplete_marker_blocks_before_copy
 test_version_tag_uses_tag_archive_url
 test_rerun_does_not_duplicate_marker

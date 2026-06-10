@@ -90,6 +90,7 @@ curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/cod
 ```text
 --lang <en|zh>   安装模板语言，默认 en
 --version <ref>  从指定分支或 tag 安装，默认 main
+--update         更新已有项目中的 VibeGuard 文件，同时保留 state
 --force          替换已有 .vibeguard
 --dry-run        只展示计划，不修改文件
 --yes            跳过确认
@@ -97,6 +98,18 @@ curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/cod
 ```
 
 运行要求：POSIX `sh` 以及安装器使用的常见 Unix 工具，包括 `curl`、`tar`、`mktemp`、`cp`、`rm`、`mkdir`、`grep`、`sed`、`awk`、`dirname` 和 `find`。
+
+## 更新 VibeGuard
+
+当 VibeGuard 发布新版本后，可以在已安装的项目里重新运行对应安装器，并传入 `--update`：
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/codex.sh | sh -s -- --update
+```
+
+`--update` 会刷新 `.vibeguard/README.md`、`.vibeguard/bootstrap.md`、`.vibeguard/rules/`、`.vibeguard/bin/` 和 AI 入口 managed block。它会保留已有 `.vibeguard/state/` 文件，只复制缺失的 state 模板文件。
+
+更新输出会报告本地 state schema 和模板 state schema 的版本。当前 VibeGuard 只报告 schema 差异，不会自动迁移 state。
 
 ## 安装内容
 
@@ -120,7 +133,7 @@ install/cursor.sh -> .cursor/rules/vibeguard.mdc
 install/all.sh    -> 以上全部入口
 ```
 
-受管理区块使用 marker 标记，并且可以幂等更新；重复运行安装器会更新 VibeGuard 区块，不会重复追加。已有 `.vibeguard/` 默认会被保护，只有传入 `--force` 才会替换。
+受管理区块使用 marker 标记，并且可以幂等更新；重复运行安装器会更新 VibeGuard 区块，不会重复追加。已有 `.vibeguard/` 默认会被保护，只有传入 `--force` 才会替换，或通过 `--update` 安全刷新。
 
 ## 工作方式
 

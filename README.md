@@ -90,6 +90,7 @@ Available options:
 ```text
 --lang <en|zh>   Template language. Defaults to en.
 --version <ref>  Install from a branch or tag. Defaults to main.
+--update         Update VibeGuard files in an existing project while preserving state.
 --force          Replace an existing .vibeguard directory.
 --dry-run        Print planned actions without changing files.
 --yes            Skip confirmation prompts.
@@ -97,6 +98,18 @@ Available options:
 ```
 
 Requirements: POSIX `sh` plus common Unix tools used by the installer, including `curl`, `tar`, `mktemp`, `cp`, `rm`, `mkdir`, `grep`, `sed`, `awk`, `dirname`, and `find`.
+
+## Updating VibeGuard
+
+To update an existing installation after a new VibeGuard release, re-run the matching installer with `--update`:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/codex.sh | sh -s -- --update
+```
+
+`--update` refreshes `.vibeguard/README.md`, `.vibeguard/bootstrap.md`, `.vibeguard/rules/`, `.vibeguard/bin/`, and the managed AI entry block. It preserves existing `.vibeguard/state/` files and only copies missing state template files.
+
+The update output reports the local and template state schema versions. VibeGuard currently reports schema differences but does not migrate state automatically.
 
 ## What Gets Installed
 
@@ -120,7 +133,7 @@ install/cursor.sh -> .cursor/rules/vibeguard.mdc
 install/all.sh    -> all of the above
 ```
 
-The managed block is marker-based and idempotent, so re-running an installer updates the VibeGuard block without duplicating it. Existing `.vibeguard/` directories are protected unless `--force` is provided.
+The managed block is marker-based and idempotent, so re-running an installer updates the VibeGuard block without duplicating it. Existing `.vibeguard/` directories are protected unless `--force` is provided, or safely refreshed with `--update`.
 
 ## How It Works
 

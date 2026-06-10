@@ -11,6 +11,7 @@
 - observed-in-code: 治理规则和状态模板使用 Markdown 文件，见 templates/en/.vibeguard/ 和 templates/zh/.vibeguard/。
 - observed-in-code: 可安装模板包含项目本地 Python 标准库辅助脚本，见 templates/en/.vibeguard/bin/ 和 templates/zh/.vibeguard/bin/。
 - observed-in-code: state 结构版本通过 `.vibeguard/state/.schema-version` 记录；当前版本为 `1`，见根目录和 templates/<lang>/.vibeguard/state/。
+- observed-in-code: 安装器支持 `--update` 安全刷新已有项目中的 VibeGuard 模板文件并保留既有 state，见 install/installer.template.sh。
 
 ## Runtime And Environment
 

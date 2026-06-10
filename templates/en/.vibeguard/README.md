@@ -35,6 +35,20 @@ If the current project does not already use Python, or if `python3` is unavailab
 
 If the helper cannot run, continue with the manual rule flow below.
 
+## Updating VibeGuard
+
+To refresh VibeGuard in this project after a new release, re-run the matching installer with `--update` from the project root.
+
+Example for Codex:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/codex.sh | sh -s -- --update
+```
+
+`--update` refreshes VibeGuard README, bootstrap, rules, helper scripts, and managed AI entry blocks. It preserves existing `.vibeguard/state/` files and only copies missing state template files.
+
+The update output reports local and template state schema versions. VibeGuard currently reports schema differences but does not migrate state automatically.
+
 ## Normal Tasks
 
 Read in this order:
