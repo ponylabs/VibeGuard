@@ -94,6 +94,25 @@ state 是提示账本，不是真理来源。
 
 如果答案不清楚，不要写入 state；在交付中简短说明即可。
 
+## 交付前复查
+
+Standard Path 或 Governed Path 在最终回复前必须做 state reconciliation。
+
+检查本次任务是否改变了以下长期信息：
+
+- 项目事实、技术栈、运行环境、目录结构或模块边界：更新 `.vibeguard/state/project-info.md`
+- 固定命令、验证命令、CI 检查或运行方式：更新 `.vibeguard/state/project-commands.md`
+- 用户批准的架构、依赖、工具、产品或流程决策：更新 `.vibeguard/state/project-decisions.md`
+- 未解决风险、验证缺口、测试缺口或后续事项：更新 `.vibeguard/state/open-items.md`
+
+如果任务修改了 README、CI、安装器、模板、测试、治理规则或工具脚本，但没有更新任何 state 文件，必须显式复查是否漏记项目知识。
+
+复查后，如果不需要更新 state，在最终回复中说明原因，例如：
+
+```text
+State: 未更新；本次变更只修正文案，没有产生新的持久项目知识。
+```
+
 ## 体积控制
 
 state 文件必须保持紧凑：

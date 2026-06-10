@@ -16,7 +16,7 @@
 
 ## Test Gaps
 
-- unresolved-risk: 当前测试覆盖安装器核心行为，且 Codex main 真实网络安装已手动 smoke 通过；但 CI 尚未自动覆盖真实网络安装，也未覆盖 Claude/Cursor/all 或 tag 安装。Impact: GitHub archive、raw URL 或工具入口差异可能只在真实安装时暴露。Next: 在 CI 中增加受控 smoke test，或 release 前手动验证各入口和 tag 安装。
+- unresolved-risk: 当前测试覆盖安装器核心行为，且 Codex main 真实网络安装和 Codex `--update --lang zh --version v0.1.3` 已手动 smoke 通过；但 CI 尚未自动覆盖真实网络安装，也未覆盖 Claude/Cursor/all 或所有 tag 安装。Impact: GitHub archive、raw URL 或工具入口差异可能只在真实安装时暴露。Next: 在 CI 中增加受控 smoke test，或 release 前手动验证各入口和 tag 安装。
 
 ## Follow-Ups
 

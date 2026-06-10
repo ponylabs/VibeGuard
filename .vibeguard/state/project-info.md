@@ -12,6 +12,8 @@
 - observed-in-code: 可安装模板包含项目本地 Python 标准库辅助脚本，见 templates/en/.vibeguard/bin/ 和 templates/zh/.vibeguard/bin/。
 - observed-in-code: state 结构版本通过 `.vibeguard/state/.schema-version` 记录；当前版本为 `1`，见根目录和 templates/<lang>/.vibeguard/state/。
 - observed-in-code: 安装器支持 `--update` 安全刷新已有项目中的 VibeGuard 模板文件并保留既有 state，见 install/installer.template.sh。
+- observed-in-code: 本仓库根目录 `.vibeguard/` 已通过 `--update --lang zh` 刷新，并包含项目本地辅助脚本，见 .vibeguard/README.md 和 .vibeguard/bin/。
+- observed-in-code: VibeGuard audit 会在项目行为、工具、文档、测试或治理变化但没有 state 改动时提示 state review，见 templates/<lang>/.vibeguard/bin/vibeguard-audit.py。
 
 ## Runtime And Environment
 
@@ -38,6 +40,7 @@
 ## Module Boundaries
 
 - observed-in-code: 根目录 .vibeguard/ 是本仓库自身使用的治理状态；用户安装模板应继续从 templates/<lang>/.vibeguard/ 复制，见 README.md。
+- observed-in-code: 根目录 .vibeguard/bin/ 是本仓库自身安装后的 VibeGuard 辅助脚本；可安装模板来源仍是 templates/<lang>/.vibeguard/bin/。
 - observed-in-code: docs/superpowers/ 是本地设计/计划文档，不进入 GitHub，见 .gitignore。
 
 ## Project Conventions

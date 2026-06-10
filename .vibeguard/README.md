@@ -16,6 +16,39 @@ Bootstrap 会判断当前是已有项目审计，还是新项目技术栈选型�
 如果这是新项目，请先引导我完成技术栈选型，再写入 state。
 ```
 
+## 可选 Python 辅助脚本
+
+VibeGuard 随模板提供两个项目本地 Python 辅助脚本，用于执行确定性检查：
+
+```sh
+python3 .vibeguard/bin/vibeguard-status.py
+python3 .vibeguard/bin/vibeguard-audit.py
+```
+
+这些脚本只使用 Python 标准库。它们不会安装包、修改 shell 配置、创建虚拟环境，也不会给项目新增运行时依赖。
+
+`vibeguard-status.py` 检查 VibeGuard 文件和 AI 入口 marker 是否存在。
+
+`vibeguard-audit.py` 检查当前 git 改动，并提示依赖清单、锁文件、安装器、CI workflow、AI 入口文件或 VibeGuard 规则等治理风险。
+
+如果当前项目本身不使用 Python，或者 `python3` 不可用，不要静默配置 Python 环境。请先向用户解释并征得许可，再为 VibeGuard 辅助脚本配置 Python 环境，并把获批的解释器命令或路径记录到 `.vibeguard/state/project-commands.md`。
+
+如果辅助脚本无法运行，请继续使用下面的手动规则流程。
+
+## 更新 VibeGuard
+
+当 VibeGuard 发布新版本后，可以在项目根目录重新运行对应安装器，并传入 `--update` 来刷新本项目的 VibeGuard。
+
+Codex 示例：
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/codex.sh | sh -s -- --update
+```
+
+`--update` 会刷新 VibeGuard README、bootstrap、rules、辅助脚本和 AI 入口 managed block。它会保留已有 `.vibeguard/state/` 文件，只复制缺失的 state 模板文件。
+
+更新输出会报告本地 state schema 和模板 state schema 的版本。当前 VibeGuard 只报告 schema 差异，不会自动迁移 state。
+
 ## 日常任务
 
 请按以下顺序阅读：

@@ -10,6 +10,9 @@
 - observed-in-code: 安装器把 templates/<lang>/.vibeguard/ 复制到目标项目根目录，见 README.md 和 install/*.sh。
 - user-approved: 工具安装器保持可直接 `curl | sh` 的 standalone 文件，但由 install/installer.template.sh 和 install/generate-installers.sh 生成，降低重复维护成本。
 - user-approved: VibeGuard 更新模式先保留已有 `.vibeguard/state/` 内容，只更新 README、bootstrap、rules、bin 和工具入口 block；state schema 差异只报告不迁移。
+- user-approved: VibeGuard status/audit 先作为项目本地 Python 标准库辅助脚本交付，不做全局 CLI、不改 PATH、不新增第三方依赖。
+- user-approved: 如果客户项目本身不涉及 Python，AI 不能静默配置 Python 环境；需先解释、征得许可，并把获批解释器记录到 `.vibeguard/state/project-commands.md`。
+- user-approved: VibeGuard 完成门槛包含 state reconciliation；最终回复必须说明 state 更新结果或不更新原因。
 
 ## Dependency Decisions
 
@@ -19,13 +22,16 @@
 ## Testing Decisions
 
 - observed-in-code: 安装器行为通过 tests/installers_test.sh 覆盖，包含语言模板、entry 注入、dry-run、force、版本 URL 和 marker 幂等。
+- observed-in-code: 安装器 update 模式通过 tests/installers_test.sh 覆盖，包含保留 state、刷新 rules/bin、补缺失 state、schema 版本报告、dry-run 和 help。
+- observed-in-code: VibeGuard helper 与 README 指引通过 tests/vibeguard_cli_test.sh 覆盖。
+- observed-in-code: audit 的 state review 提醒通过 tests/vibeguard_cli_test.sh 覆盖，包含未更新 state 时提醒、已更新 state 时不提醒。
 - observed-in-code: shell 脚本静态检查使用 `sh -n`。
 
 ## Product Or Delivery Decisions
 
 - observed-in-code: VibeGuard 支持 Codex、Claude Code、Cursor，以及 all 安装器，见 README.md 和 install/。
 - observed-in-code: VibeGuard 支持英文和中文模板；英文是默认安装语言，见 README.md。
-- user-approved: 采用半自动 release/tag 流程；推送 `v*` tag 后由 GitHub Actions 先运行 shell 语法检查和 installer tests，再创建 GitHub Release。
+- user-approved: 采用半自动 release/tag 流程；推送 `v*` tag 后由 GitHub Actions 先运行 shell 语法检查、Python helper 语法检查、installer tests 和 helper tests，再创建 GitHub Release。
 
 ## Rejected Options
 
