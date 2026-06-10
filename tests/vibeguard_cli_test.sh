@@ -23,6 +23,10 @@ assert_contains() {
   grep -F -- "$2" "$1" >/dev/null 2>&1 || fail "expected $1 to contain $2"
 }
 
+assert_not_contains() {
+  ! grep -F -- "$2" "$1" >/dev/null 2>&1 || fail "expected $1 not to contain $2"
+}
+
 make_project() {
   lang=$1
   dir=$(mktemp -d "$TMP_ROOT/project.XXXXXX")
@@ -33,6 +37,16 @@ Before making changes, read and follow `.vibeguard/README.md`.
 <!-- VIBEGUARD:END -->
 EOF
   printf '%s\n' "$dir"
+}
+
+commit_project_baseline() {
+  project=$1
+  (
+    cd "$project"
+    git init >/dev/null 2>&1
+    git add .
+    git -c user.name='VibeGuard Test' -c user.email='test@example.com' commit -m baseline >/dev/null 2>&1
+  )
 }
 
 test_status_script_reports_template_setup() {
@@ -66,6 +80,36 @@ test_audit_script_flags_dependency_and_lock_changes() {
   assert_contains "$out" 'Risk: high'
   assert_contains "$out" 'package.json: dependency manifest changed'
   assert_contains "$out" 'package-lock.json: lockfile changed'
+}
+
+test_audit_recommends_state_review_for_project_knowledge_changes() {
+  project=$(make_project en)
+  out="$TMP_ROOT/state-review.out"
+  commit_project_baseline "$project"
+
+  (
+    cd "$project"
+    printf '\nProject behavior changed.\n' >> README.md
+    "$PYTHON" .vibeguard/bin/vibeguard-audit.py > "$out"
+  )
+
+  assert_contains "$out" 'State review: recommended'
+  assert_contains "$out" 'Project behavior, tooling, docs, tests, or governance changed but no state files changed.'
+}
+
+test_audit_skips_state_review_when_state_changed() {
+  project=$(make_project en)
+  out="$TMP_ROOT/state-review-skipped.out"
+  commit_project_baseline "$project"
+
+  (
+    cd "$project"
+    printf '\nProject behavior changed.\n' >> README.md
+    printf '\n- observed-in-code: README changed.\n' >> .vibeguard/state/project-info.md
+    "$PYTHON" .vibeguard/bin/vibeguard-audit.py > "$out"
+  )
+
+  assert_not_contains "$out" 'State review: recommended'
 }
 
 test_readmes_explain_python_helper_and_permission_boundary() {
@@ -108,6 +152,8 @@ command -v "$PYTHON" >/dev/null 2>&1 || fail "missing Python interpreter: $PYTHO
 
 test_status_script_reports_template_setup
 test_audit_script_flags_dependency_and_lock_changes
+test_audit_recommends_state_review_for_project_knowledge_changes
+test_audit_skips_state_review_when_state_changed
 test_readmes_explain_python_helper_and_permission_boundary
 test_readmes_explain_update_mode
 test_state_schema_version_is_documented

@@ -12,6 +12,8 @@ Verification should prove the task success criteria, not create process noise.
 
 Before claiming success, read the output of verification commands or checks.
 
+Before claiming completion, perform state reconciliation: check whether this task created project facts, fixed commands, human-approved decisions, risks, or verification gaps that future tasks should reuse. When needed, update `.vibeguard/state/` according to `.vibeguard/rules/state-update.md`; when not needed, briefly state why state was not updated in the final response.
+
 ## Acceptable Verification
 
 Choose the smallest sufficient verification based on task risk.
@@ -91,16 +93,20 @@ When unable to verify, you may hand off the change, but must not describe it as 
 
 Final response must include verification result or verification gap.
 
+Final response must also include state update result or why no state update was needed.
+
 Use concise format:
 
 ```text
 Verified: `command` passed.
+State: updated `.vibeguard/state/project-info.md`.
 ```
 
 or:
 
 ```text
 Open: did not run `command` because ...; risk is ...
+State: not updated; this change did not create new persistent project knowledge.
 ```
 
 Do not output the full internal checklist.

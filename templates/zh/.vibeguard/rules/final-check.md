@@ -12,6 +12,8 @@
 
 声称成功前，必须读取验证命令或检查结果的输出。
 
+声称完成前，必须完成 state reconciliation：检查本次任务是否产生需要未来任务复用的项目事实、固定命令、人类批准决策、风险或验证缺口。需要时按 `.vibeguard/rules/state-update.md` 更新 `.vibeguard/state/`；不需要时，在最终回复中简短说明 state 未更新的原因。
+
 ## 可接受验证
 
 根据任务风险选择最小但足够的验证。
@@ -91,16 +93,20 @@
 
 最终回复必须包含验证结果或验证缺口。
 
+最终回复还必须包含 state 更新结果或不更新原因。
+
 使用简洁格式：
 
 ```text
 Verified: `command` passed.
+State: updated `.vibeguard/state/project-info.md`.
 ```
 
 或：
 
 ```text
 Open: 未运行 `command`，原因是 ...；风险是 ...
+State: 未更新；本次变更未产生新的持久项目知识。
 ```
 
 不要输出完整内部 checklist。

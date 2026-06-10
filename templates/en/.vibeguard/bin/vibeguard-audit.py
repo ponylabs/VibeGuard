@@ -38,6 +38,22 @@ ENTRY_FILES = {
     ".cursor/rules/vibeguard.mdc",
 }
 
+STATE_REVIEW_PREFIXES = (
+    ".github/workflows/",
+    ".vibeguard/rules/",
+    "install/",
+    "templates/",
+    "tests/",
+)
+
+STATE_REVIEW_FILES = {
+    "README.md",
+    "README.zh-CN.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "pyproject.toml",
+}
+
 
 def changed_files() -> Tuple[List[str], Optional[str]]:
     result = subprocess.run(
@@ -86,6 +102,17 @@ def risk_rank(risk: str) -> int:
     return {"low": 0, "medium": 1, "high": 2}[risk]
 
 
+def needs_state_review(files: List[str]) -> bool:
+    if any(path.startswith(".vibeguard/state/") for path in files):
+        return False
+    for path in files:
+        if path in STATE_REVIEW_FILES:
+            return True
+        if any(path.startswith(prefix) for prefix in STATE_REVIEW_PREFIXES):
+            return True
+    return False
+
+
 def main() -> int:
     files, error = changed_files()
     if error:
@@ -111,6 +138,12 @@ def main() -> int:
     print("Changed files:")
     for path, risk, reason in findings:
         print(f"- {path}: {reason} ({risk})")
+
+    if needs_state_review(files):
+        print()
+        print("State review: recommended")
+        print("Project behavior, tooling, docs, tests, or governance changed but no state files changed.")
+        print("Review .vibeguard/state/ before final delivery.")
 
     if risk_rank(highest) >= risk_rank("medium"):
         print()

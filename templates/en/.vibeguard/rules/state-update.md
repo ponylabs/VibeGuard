@@ -94,6 +94,25 @@ Before updating state, confirm:
 
 If unclear, do not write state. Mention it briefly in handoff instead.
 
+## Pre-Handoff Reconciliation
+
+Standard Path or Governed Path tasks must perform state reconciliation before final response.
+
+Check whether this task changed long-lived information:
+
+- project facts, tech stack, runtime environment, directory structure, or module boundaries: update `.vibeguard/state/project-info.md`
+- fixed commands, verification commands, CI checks, or run behavior: update `.vibeguard/state/project-commands.md`
+- user-approved architecture, dependency, tool, product, or process decisions: update `.vibeguard/state/project-decisions.md`
+- unresolved risks, verification gaps, test gaps, or follow-ups: update `.vibeguard/state/open-items.md`
+
+If the task changed README, CI, installers, templates, tests, governance rules, or helper scripts but no state files changed, explicitly review whether project knowledge was missed.
+
+After review, if no state update is needed, state why in the final response, for example:
+
+```text
+State: not updated; this was a copy edit and did not create persistent project knowledge.
+```
+
 ## Size Control
 
 Keep state compact:
