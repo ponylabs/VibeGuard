@@ -85,6 +85,8 @@ Install the Chinese template with any installer:
 curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/codex.sh | sh -s -- --lang zh
 ```
 
+The Chinese template localizes user-facing headings, instructions, installer help, and helper-script prompts while keeping stable tokens such as `user-approved`, file paths, command names, and `low/medium/high` in English.
+
 Available options:
 
 ```text

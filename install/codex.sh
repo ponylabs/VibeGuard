@@ -22,6 +22,24 @@ END_MARKER='<!-- VIBEGUARD:END -->'
 ENTRY_LINE='Before making changes, read and follow `.vibeguard/README.md`.'
 
 usage() {
+  if [ "$LANGUAGE" = "zh" ]; then
+    cat <<EOF
+用法：sh install/codex.sh [options]
+
+将 VibeGuard 安装到当前项目，并注入 AGENTS.md。
+
+选项：
+  --version <ref>  从 branch 或 tag 安装。默认 main。
+  --lang <en|zh>   安装模板语言。默认 en。
+  --update         更新 VibeGuard 规则、辅助脚本和入口 block；保留已有 state。
+  --force          替换已有 .vibeguard 目录。
+  --dry-run        只打印计划操作，不修改文件。
+  --yes            跳过交互确认提示。
+  --help           打印用法。
+EOF
+    return
+  fi
+
   cat <<EOF
 Usage: sh install/codex.sh [options]
 

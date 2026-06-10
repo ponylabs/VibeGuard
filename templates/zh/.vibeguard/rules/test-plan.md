@@ -1,4 +1,4 @@
-# Test Plan
+# 测试计划（Test Plan）
 
 本规则用于控制 AI 如何编写、调整和运行测试与静态检查。
 
@@ -87,7 +87,7 @@ Verified: `uv run pytest tests/foo_test.py` (source: uv project command)
 - 因为现有测试难懂就绕开全部旧测试
 - 用裸跑全局命令冒充项目验证
 
-## Legacy Test Budget
+## 遗留测试预算（Legacy Test Budget）
 
 优先复用，但不要和遗留测试无限缠斗。
 
@@ -120,7 +120,7 @@ Governed Path:
 
 无法运行检查时，报告原因和风险。
 
-## State 更新
+## 状态（State）更新
 
 当发现或确认固定项目命令时，更新 `.vibeguard/state/project-commands.md`。
 

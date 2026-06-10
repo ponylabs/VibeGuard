@@ -1,4 +1,4 @@
-# Bootstrap
+# 初始化（Bootstrap）
 
 本文件用于 VibeGuard 安装后，或 `.vibeguard/state/` 基本为空、明显过期时使用。
 

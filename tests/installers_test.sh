@@ -327,6 +327,17 @@ test_help_mentions_update() {
   assert_contains "$TMP_ROOT/help.out" '--update'
 }
 
+test_zh_help_uses_chinese_labels_with_stable_options() {
+  project=$(make_project)
+
+  run_installer install/codex.sh "$project" --lang zh --help > "$TMP_ROOT/help-zh.out"
+
+  assert_contains "$TMP_ROOT/help-zh.out" '用法：sh install/codex.sh [options]'
+  assert_contains "$TMP_ROOT/help-zh.out" '选项：'
+  assert_contains "$TMP_ROOT/help-zh.out" '--update'
+  assert_contains "$TMP_ROOT/help-zh.out" '更新 VibeGuard 规则、辅助脚本和入口 block；保留已有 state。'
+}
+
 test_incomplete_marker_blocks_before_copy() {
   project=$(make_project)
   printf '%s\n' "$START_MARKER" > "$project/AGENTS.md"
@@ -416,6 +427,7 @@ test_force_replaces_existing_vibeguard
 test_update_refreshes_template_files_and_preserves_state
 test_update_requires_existing_vibeguard
 test_help_mentions_update
+test_zh_help_uses_chinese_labels_with_stable_options
 test_incomplete_marker_blocks_before_copy
 test_version_tag_uses_tag_archive_url
 test_rerun_does_not_duplicate_marker

@@ -1,10 +1,10 @@
-# Project Info
+# 项目信息（Project Info）
 
 记录当前项目相对稳定、后续任务会反复用到的事实。
 
 不要记录通用规则、临时过程或可以低成本从代码中查到的小细节。
 
-## Tech Stack
+## 技术栈（Tech Stack）
 
 尚未记录。
 
@@ -15,7 +15,7 @@
 - observed-in-code: 后端使用 FastAPI，见 pyproject.toml。
 ```
 
-## Runtime And Environment
+## 运行时与环境（Runtime And Environment）
 
 尚未记录。
 
@@ -26,7 +26,7 @@
 - user-approved: 本项目本地开发必须使用 uv 管理虚拟环境。
 ```
 
-## Package And Tooling
+## 包与工具链（Package And Tooling）
 
 尚未记录。
 
@@ -37,7 +37,7 @@
 - observed-in-code: TypeScript 配置入口为 tsconfig.json。
 ```
 
-## Key Directories
+## 关键目录（Key Directories）
 
 尚未记录。
 
@@ -48,7 +48,7 @@
 - observed-in-code: 共享 UI 组件位于 src/components/。
 ```
 
-## Module Boundaries
+## 模块边界（Module Boundaries）
 
 尚未记录。
 
@@ -58,7 +58,7 @@
 - observed-in-code: billing 模块不直接访问 auth 数据库表，见 src/billing/README.md。
 ```
 
-## Project Conventions
+## 项目约定（Project Conventions）
 
 尚未记录。
 

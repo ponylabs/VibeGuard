@@ -1,4 +1,4 @@
-# State Update
+# 状态更新（State Update）
 
 本规则用于定义任务结束后如何读取、判断和更新 `.vibeguard/state/`。
 

@@ -1,4 +1,4 @@
-# Change Area
+# 变更范围（Change Area）
 
 本规则用于控制 AI 辅助开发时允许触碰的变更边界。
 

@@ -116,40 +116,40 @@ def needs_state_review(files: List[str]) -> bool:
 def main() -> int:
     files, error = changed_files()
     if error:
-        print("VibeGuard audit: unavailable")
+        print("VibeGuard 审计（audit）：unavailable")
         print()
         print(f"Git: {error}")
-        print("Next: run this command from a git worktree, or follow .vibeguard/README.md manually.")
+        print("下一步（Next）：请在 git worktree 中运行此命令，或手动遵循 .vibeguard/README.md。")
         return 1
 
     if not files:
-        print("VibeGuard audit: ok")
+        print("VibeGuard 审计（audit）：ok")
         print()
-        print("Changed files: none")
+        print("变更文件（Changed files）：none")
         return 0
 
     findings = [(path, *classify(path)) for path in files]
     highest = max((risk for _, risk, _ in findings), key=risk_rank)
     status = "attention needed" if risk_rank(highest) >= risk_rank("medium") else "ok"
 
-    print(f"VibeGuard audit: {status}")
-    print(f"Risk: {highest}")
+    print(f"VibeGuard 审计（audit）：{status}")
+    print(f"风险等级（Risk）：{highest}")
     print()
-    print("Changed files:")
+    print("变更文件（Changed files）：")
     for path, risk, reason in findings:
         print(f"- {path}: {reason} ({risk})")
 
     if needs_state_review(files):
         print()
-        print("State review: recommended")
-        print("Project behavior, tooling, docs, tests, or governance changed but no state files changed.")
-        print("Review .vibeguard/state/ before final delivery.")
+        print("状态复查（State review）：建议执行")
+        print("项目行为、工具、文档、测试或治理发生变化，但没有 state 文件变更。")
+        print("请在最终交付前复查 .vibeguard/state/。")
 
     if risk_rank(highest) >= risk_rank("medium"):
         print()
-        print("Next:")
-        print("- Review .vibeguard/rules/task-flow.md for gate requirements.")
-        print("- Run the project checks listed in .vibeguard/state/project-commands.md.")
+        print("下一步（Next）：")
+        print("- 复查 .vibeguard/rules/task-flow.md 中的 gate 要求。")
+        print("- 运行 .vibeguard/state/project-commands.md 中记录的项目检查。")
 
     return 0
 

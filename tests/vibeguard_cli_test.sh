@@ -64,6 +64,23 @@ test_status_script_reports_template_setup() {
   assert_contains "$out" 'Python helper: available'
 }
 
+test_zh_status_script_uses_chinese_labels_with_stable_tokens() {
+  project=$(make_project zh)
+  out="$TMP_ROOT/zh-status.out"
+
+  (
+    cd "$project"
+    "$PYTHON" .vibeguard/bin/vibeguard-status.py > "$out"
+  )
+
+  assert_contains "$out" 'VibeGuard 状态（status）：ok'
+  assert_contains "$out" '核心文件（Core files）：'
+  assert_contains "$out" '入口文件（Entries）：'
+  assert_contains "$out" '自动化（Automation）：'
+  assert_contains "$out" 'AGENTS.md: installed'
+  assert_contains "$out" 'Python helper: available'
+}
+
 test_audit_script_flags_dependency_and_lock_changes() {
   project=$(make_project en)
   out="$TMP_ROOT/audit.out"
@@ -82,6 +99,25 @@ test_audit_script_flags_dependency_and_lock_changes() {
   assert_contains "$out" 'package-lock.json: lockfile changed'
 }
 
+test_zh_audit_script_uses_chinese_labels_with_stable_tokens() {
+  project=$(make_project zh)
+  out="$TMP_ROOT/zh-audit.out"
+
+  (
+    cd "$project"
+    git init >/dev/null 2>&1
+    printf '{"dependencies":{"left-pad":"1.0.0"}}\n' > package.json
+    printf '{}\n' > package-lock.json
+    "$PYTHON" .vibeguard/bin/vibeguard-audit.py > "$out"
+  )
+
+  assert_contains "$out" 'VibeGuard 审计（audit）：attention needed'
+  assert_contains "$out" '风险等级（Risk）：high'
+  assert_contains "$out" '变更文件（Changed files）：'
+  assert_contains "$out" 'package.json: dependency manifest changed'
+  assert_contains "$out" 'package-lock.json: lockfile changed'
+}
+
 test_audit_recommends_state_review_for_project_knowledge_changes() {
   project=$(make_project en)
   out="$TMP_ROOT/state-review.out"
@@ -95,6 +131,21 @@ test_audit_recommends_state_review_for_project_knowledge_changes() {
 
   assert_contains "$out" 'State review: recommended'
   assert_contains "$out" 'Project behavior, tooling, docs, tests, or governance changed but no state files changed.'
+}
+
+test_zh_audit_recommends_state_review_with_chinese_label_and_anchor() {
+  project=$(make_project zh)
+  out="$TMP_ROOT/zh-state-review.out"
+  commit_project_baseline "$project"
+
+  (
+    cd "$project"
+    printf '\nProject behavior changed.\n' >> README.md
+    "$PYTHON" .vibeguard/bin/vibeguard-audit.py > "$out"
+  )
+
+  assert_contains "$out" '状态复查（State review）：建议执行'
+  assert_contains "$out" '项目行为、工具、文档、测试或治理发生变化，但没有 state 文件变更。'
 }
 
 test_audit_skips_state_review_when_state_changed() {
@@ -125,6 +176,9 @@ test_readmes_explain_python_helper_and_permission_boundary() {
   assert_contains "$zh_readme" 'python3 .vibeguard/bin/vibeguard-audit.py'
   assert_contains "$zh_readme" '先向用户解释并征得许可'
   assert_contains "$zh_readme" '.vibeguard/state/project-commands.md'
+  assert_contains "$zh_readme" '语言约定'
+  assert_contains "$zh_readme" 'user-approved'
+  assert_contains "$zh_readme" 'low/medium/high'
 }
 
 test_readmes_explain_update_mode() {
@@ -132,7 +186,9 @@ test_readmes_explain_update_mode() {
   zh_readme="$ROOT_DIR/templates/zh/.vibeguard/README.md"
 
   assert_contains "$ROOT_DIR/README.md" '--update'
+  assert_contains "$ROOT_DIR/README.md" 'stable tokens such as `user-approved`'
   assert_contains "$ROOT_DIR/README.zh-CN.md" '--update'
+  assert_contains "$ROOT_DIR/README.zh-CN.md" '稳定英文 token'
   assert_contains "$en_readme" '--update'
   assert_contains "$en_readme" 'preserves existing `.vibeguard/state/` files'
   assert_contains "$zh_readme" '--update'
@@ -148,14 +204,27 @@ test_state_schema_version_is_documented() {
   assert_contains "$ROOT_DIR/templates/zh/.vibeguard/state/state-index.md" 'state 结构版本'
 }
 
+test_zh_template_headings_use_chinese_with_english_anchors() {
+  assert_contains "$ROOT_DIR/templates/zh/.vibeguard/rules/task-flow.md" '# 任务流程（Task Flow）'
+  assert_contains "$ROOT_DIR/templates/zh/.vibeguard/rules/task-flow.md" '### 快速路径（Fast Path）'
+  assert_contains "$ROOT_DIR/templates/zh/.vibeguard/rules/dependency-check.md" '## 硬门禁（Hard Gate）'
+  assert_contains "$ROOT_DIR/templates/zh/.vibeguard/rules/state-update.md" '# 状态更新（State Update）'
+  assert_contains "$ROOT_DIR/templates/zh/.vibeguard/state/state-index.md" '# 状态索引（State Index）'
+  assert_contains "$ROOT_DIR/templates/zh/.vibeguard/state/project-commands.md" '## 验证记录（Verification Notes）'
+}
+
 command -v "$PYTHON" >/dev/null 2>&1 || fail "missing Python interpreter: $PYTHON"
 
 test_status_script_reports_template_setup
+test_zh_status_script_uses_chinese_labels_with_stable_tokens
 test_audit_script_flags_dependency_and_lock_changes
+test_zh_audit_script_uses_chinese_labels_with_stable_tokens
 test_audit_recommends_state_review_for_project_knowledge_changes
+test_zh_audit_recommends_state_review_with_chinese_label_and_anchor
 test_audit_skips_state_review_when_state_changed
 test_readmes_explain_python_helper_and_permission_boundary
 test_readmes_explain_update_mode
 test_state_schema_version_is_documented
+test_zh_template_headings_use_chinese_with_english_anchors
 
 printf 'ok - vibeguard cli tests passed\n'

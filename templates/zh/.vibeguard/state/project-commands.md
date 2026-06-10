@@ -1,4 +1,4 @@
-# Project Commands
+# 项目命令（Project Commands）
 
 记录当前项目固定命令。
 
@@ -6,7 +6,7 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 
 不要记录一次性命令流水。只记录未来任务会复用的项目命令。
 
-## Install
+## 安装（Install）
 
 尚未记录。
 
@@ -16,7 +16,7 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 - observed-in-code: install command is `pnpm install`, from pnpm-lock.yaml.
 ```
 
-## Development
+## 开发（Development）
 
 尚未记录。
 
@@ -27,7 +27,7 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 - user-approved: VibeGuard helper interpreter is `python3`, approved for this project.
 ```
 
-## Static Checks
+## 静态检查（Static Checks）
 
 尚未记录。
 
@@ -39,7 +39,7 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 - observed-in-code: typecheck command is `pnpm typecheck`, from package.json.
 ```
 
-## Tests
+## 测试（Tests）
 
 尚未记录。
 
@@ -51,7 +51,7 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 - observed-in-code: e2e command is `pnpm e2e`, from package.json.
 ```
 
-## Build
+## 构建（Build）
 
 尚未记录。
 
@@ -61,7 +61,7 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 - observed-in-code: build command is `pnpm build`, from package.json.
 ```
 
-## Verification Notes
+## 验证记录（Verification Notes）
 
 尚未记录。
 

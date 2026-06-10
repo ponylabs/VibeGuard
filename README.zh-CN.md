@@ -85,6 +85,8 @@ curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/all
 curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/codex.sh | sh -s -- --lang zh
 ```
 
+中文模板会汉化面向用户的标题、说明、安装器帮助和辅助脚本提示，但会保留 `user-approved`、文件路径、命令名、`low/medium/high` 等稳定英文 token。
+
 可用参数：
 
 ```text

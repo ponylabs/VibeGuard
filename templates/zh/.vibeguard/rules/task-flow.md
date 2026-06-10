@@ -1,4 +1,4 @@
-# Task Flow
+# 任务流程（Task Flow）
 
 本工作流用于治理当前项目中的 AI 辅助变更。
 
@@ -30,7 +30,7 @@ state 读取、写入、证据标签和体积控制遵守 `.vibeguard/rules/stat
 
 判定整个逻辑任务，而不是只判定下一次小编辑。
 
-### Fast Path
+### 快速路径（Fast Path）
 
 适用于极小、低风险变更：
 
@@ -64,7 +64,7 @@ Fast Path 是白名单机制。出现以下任一情况，必须升级到 Standa
 - 在同一对话中，第二次或更多次以 Fast Path 触碰同一功能、文件、模块、API 或行为
 - 无法确定影响面
 
-### Standard Path
+### 标准路径（Standard Path）
 
 适用于常规开发任务：
 
@@ -86,7 +86,7 @@ Standard Path 规则：
 8. 只有项目知识发生变化且有证据支撑时，才更新治理状态。
 9. 交付时说明变更、验证和未解决风险。
 
-### Governed Path
+### 治理路径（Governed Path）
 
 适用于高风险或高扩散半径变更：
 
@@ -110,13 +110,13 @@ Governed Path 规则：
 8. 用有证据支撑的变更更新治理状态。
 9. 交付时提供版本管理建议。
 
-## 2. Gates
+## 2. 门禁（Gates）
 
 Gates 用于阻止不可逆或高扩散风险错误，不应把每个任务都变成审批仪式。
 
 Hard Gate 的含义是：停止继续改文件，并提出一个简洁问题。用户回复前不要继续实现。如果工具无法安全暂停，保持工作区不再变化，并报告触发的 gate。
 
-### Hard Gates
+### 硬门禁（Hard Gates）
 
 以下情况必须停止并等待人类确认：
 
@@ -130,7 +130,7 @@ Hard Gate 的含义是：停止继续改文件，并提出一个简洁问题。�
 - 因无关原因编辑密钥、凭证、生成文件、vendor 代码或锁文件
 - 需求与 VibeGuard 规则或状态冲突，但仍要继续
 
-### Soft Gates
+### 软门禁（Soft Gates）
 
 以下情况不一定停止，但必须在计划或交付中指出风险：
 
@@ -202,7 +202,7 @@ state 读取预算遵守 `.vibeguard/rules/state-update.md`。
 
 默认先读 `.vibeguard/state/state-index.md`，再只读取和当前任务相关的状态文件。
 
-## 8. Anti-Salami Rule
+## 8. 反切片规则（Anti-Salami Rule）
 
 不要把一个逻辑上连贯的变更拆成多个 Fast Path 任务来规避 Standard Path 或 Governed Path。
 
