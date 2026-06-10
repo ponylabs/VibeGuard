@@ -24,6 +24,7 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 
 ```text
 - observed-in-code: dev command is `pnpm dev`, from package.json.
+- user-approved: VibeGuard helper interpreter is `python3`, approved for this project.
 ```
 
 ## Static Checks

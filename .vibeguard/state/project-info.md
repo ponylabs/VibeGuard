@@ -9,6 +9,7 @@
 - observed-in-code: 本项目是 VibeGuard 安装器与治理模板仓库，见 README.md。
 - observed-in-code: 安装器使用 POSIX sh，见 install/*.sh。
 - observed-in-code: 治理规则和状态模板使用 Markdown 文件，见 templates/en/.vibeguard/ 和 templates/zh/.vibeguard/。
+- observed-in-code: 可安装模板包含项目本地 Python 标准库辅助脚本，见 templates/en/.vibeguard/bin/ 和 templates/zh/.vibeguard/bin/。
 
 ## Runtime And Environment
 
@@ -28,6 +29,7 @@
 - observed-in-code: install/codex.sh、install/claude.sh、install/cursor.sh、install/all.sh 由 install/installer.template.sh 和 install/generate-installers.sh 生成。
 - observed-in-code: 安装器测试位于 tests/installers_test.sh。
 - observed-in-code: 可安装模板位于 templates/en/.vibeguard/ 和 templates/zh/.vibeguard/，见 README.md。
+- observed-in-code: 模板内 VibeGuard 辅助脚本位于 templates/<lang>/.vibeguard/bin/。
 - observed-in-code: README 视觉素材位于 docs/assets/，包含源品牌 PNG 和用于 README 展示的 logo/banner SVG。
 - observed-in-code: 本仓库自己的治理状态位于根目录 .vibeguard/。
 

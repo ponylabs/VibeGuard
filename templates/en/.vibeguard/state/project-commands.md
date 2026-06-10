@@ -24,6 +24,7 @@ Template:
 
 ```text
 - observed-in-code: dev command is `pnpm dev`, from package.json.
+- user-approved: VibeGuard helper interpreter is `python3`, approved for this project.
 ```
 
 ## Static Checks

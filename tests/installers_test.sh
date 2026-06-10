@@ -77,12 +77,16 @@ reset_curl_log() {
 }
 
 setup_fake_download() {
-  mkdir -p "$FAKE_BIN" "$FAKE_SRC/VibeGuard-main/.vibeguard" "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard" "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard"
+  mkdir -p "$FAKE_BIN" "$FAKE_SRC/VibeGuard-main/.vibeguard" "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/bin" "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/bin"
   printf '# Wrong Root VibeGuard\n' > "$FAKE_SRC/VibeGuard-main/.vibeguard/README.md"
   printf '# VibeGuard\n中文模板\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/README.md"
   printf '# VibeGuard\nEnglish template\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/README.md"
   printf '# Bootstrap\n中文初始化\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/bootstrap.md"
   printf '# Bootstrap\nEnglish bootstrap\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/bootstrap.md"
+  printf '# status\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/bin/vibeguard-status.py"
+  printf '# audit\n' > "$FAKE_SRC/VibeGuard-main/templates/zh/.vibeguard/bin/vibeguard-audit.py"
+  printf '# status\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/bin/vibeguard-status.py"
+  printf '# audit\n' > "$FAKE_SRC/VibeGuard-main/templates/en/.vibeguard/bin/vibeguard-audit.py"
   tar -czf "$FAKE_ARCHIVE" -C "$FAKE_SRC" VibeGuard-main
 
   cat > "$FAKE_BIN/curl" <<'EOF'
@@ -138,6 +142,8 @@ test_codex_installs_only_agents() {
 
   assert_exists "$project/.vibeguard/README.md"
   assert_exists "$project/.vibeguard/bootstrap.md"
+  assert_exists "$project/.vibeguard/bin/vibeguard-status.py"
+  assert_exists "$project/.vibeguard/bin/vibeguard-audit.py"
   assert_contains "$project/.vibeguard/README.md" '# VibeGuard'
   assert_contains "$project/.vibeguard/README.md" 'English template'
   assert_contains "$project/.vibeguard/bootstrap.md" 'English bootstrap'

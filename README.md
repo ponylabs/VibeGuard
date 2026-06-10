@@ -106,6 +106,7 @@ Each installer copies a language-specific governance template into the current p
 .vibeguard/
   README.md       # entry point for AI assistants
   bootstrap.md    # first-run project audit or stack selection flow
+  bin/            # optional project-local Python helper scripts
   rules/          # reusable task, dependency, test, and verification rules
   state/          # project-specific facts, decisions, commands, and open items
 ```
@@ -130,6 +131,7 @@ VibeGuard gives AI coding tools a small operating manual for each project:
 | 🧭 `rules/` | Reusable guidance for task flow, change boundaries, dependencies, testing, verification, and state updates. |
 | 🧠 `state/` | Project-specific facts, fixed commands, human-approved decisions, and unresolved risks. |
 | 🪄 `bootstrap.md` | First-run state initialization for an existing project or a new project. |
+| 🧪 `bin/` | Optional project-local Python helper scripts for status and git-change audit checks. |
 
 The result is a repeatable loop: read the project rules, check the relevant state, make the smallest useful change, run the right verification, and report any remaining risk.
 

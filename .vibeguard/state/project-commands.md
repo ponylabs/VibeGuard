@@ -19,16 +19,20 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 
 ## Static Checks
 
-- observed-in-code: shell syntax check command is `sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh`.
+- observed-in-code: shell syntax check command is `sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh tests/vibeguard_cli_test.sh`.
+- observed-in-code: Python helper syntax check command is `PYTHONPYCACHEPREFIX="${TMPDIR:-/tmp}/vibeguard-pycache" python3 -m py_compile templates/en/.vibeguard/bin/vibeguard-status.py templates/en/.vibeguard/bin/vibeguard-audit.py templates/zh/.vibeguard/bin/vibeguard-status.py templates/zh/.vibeguard/bin/vibeguard-audit.py`.
 - observed-in-code: CI runs shell syntax checks on pull requests and pushes to main, see .github/workflows/ci.yml.
-- observed-in-code: release workflow runs shell syntax check with `sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh`, see .github/workflows/release.yml.
+- observed-in-code: release workflow runs shell syntax check with `sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh tests/vibeguard_cli_test.sh`, see .github/workflows/release.yml.
 - observed-in-code: installer sync check is part of `sh tests/installers_test.sh`; it compares installer diffs before and after `sh install/generate-installers.sh`.
 
 ## Tests
 
 - observed-in-code: installer test command is `sh tests/installers_test.sh`, from tests/installers_test.sh.
+- observed-in-code: VibeGuard helper test command is `sh tests/vibeguard_cli_test.sh`, from tests/vibeguard_cli_test.sh.
 - observed-in-code: CI runs installer tests on pull requests and pushes to main, see .github/workflows/ci.yml.
+- observed-in-code: CI runs VibeGuard helper tests on pull requests and pushes to main, see .github/workflows/ci.yml.
 - observed-in-code: release workflow runs installer tests with `sh tests/installers_test.sh`, see .github/workflows/release.yml.
+- observed-in-code: release workflow runs VibeGuard helper tests with `sh tests/vibeguard_cli_test.sh`, see .github/workflows/release.yml.
 
 ## Build
 
@@ -37,6 +41,8 @@ AI 运行测试、静态检查、构建或本地服务时，应优先使用这�
 ## Verification Notes
 
 - verified-by-command: `sh tests/installers_test.sh` passed.
-- verified-by-command: `sh -n install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh` passed.
+- verified-by-command: `sh tests/vibeguard_cli_test.sh` passed.
+- verified-by-command: `sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh tests/vibeguard_cli_test.sh` passed.
+- verified-by-command: `PYTHONPYCACHEPREFIX="${TMPDIR:-/tmp}/vibeguard-pycache" python3 -m py_compile templates/en/.vibeguard/bin/vibeguard-status.py templates/en/.vibeguard/bin/vibeguard-audit.py templates/zh/.vibeguard/bin/vibeguard-status.py templates/zh/.vibeguard/bin/vibeguard-audit.py` passed.
 - verified-by-command: `uv sync --offline` passed.
 - verified-by-command: `uv run --offline python --version` printed Python 3.12.13.

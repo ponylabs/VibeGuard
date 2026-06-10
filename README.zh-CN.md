@@ -106,6 +106,7 @@ curl -fsSL https://raw.githubusercontent.com/ponylabs/VibeGuard/main/install/cod
 .vibeguard/
   README.md       # AI assistant 入口
   bootstrap.md    # 首次项目体检或技术栈选型流程
+  bin/            # 可选的项目本地 Python 辅助脚本
   rules/          # 可复用的任务、依赖、测试和验证规则
   state/          # 项目事实、决策、命令和开放事项
 ```
@@ -130,6 +131,7 @@ VibeGuard 会给 AI 编码工具提供一份面向当前项目的小型操作手
 | 🧭 `rules/` | 定义任务流程、变更边界、依赖、测试、验证和状态更新规则。 |
 | 🧠 `state/` | 记录项目事实、固定命令、人类批准的决策和未解决风险。 |
 | 🪄 `bootstrap.md` | 帮助已有项目或新项目初始化这些状态。 |
+| 🧪 `bin/` | 可选的项目本地 Python 辅助脚本，用于 status 和 git 改动 audit 检查。 |
 
 最终形成一个可重复的循环：读取项目规则，检查相关状态，做最小必要修改，运行正确验证，并报告剩余风险。
 

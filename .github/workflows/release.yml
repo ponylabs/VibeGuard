@@ -18,10 +18,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check shell syntax
-        run: sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh
+        run: sh -n install/installer.template.sh install/generate-installers.sh install/codex.sh install/claude.sh install/cursor.sh install/all.sh tests/installers_test.sh tests/vibeguard_cli_test.sh
+
+      - name: Check Python helper syntax
+        run: PYTHONPYCACHEPREFIX="${TMPDIR:-/tmp}/vibeguard-pycache" python3 -m py_compile templates/en/.vibeguard/bin/vibeguard-status.py templates/en/.vibeguard/bin/vibeguard-audit.py templates/zh/.vibeguard/bin/vibeguard-status.py templates/zh/.vibeguard/bin/vibeguard-audit.py
 
       - name: Run installer tests
         run: sh tests/installers_test.sh
+
+      - name: Run VibeGuard helper tests
+        run: sh tests/vibeguard_cli_test.sh
 
       - name: Create GitHub release
         env:

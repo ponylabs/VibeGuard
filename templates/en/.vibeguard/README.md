@@ -16,6 +16,25 @@ If this is an existing project, audit the current project and propose state upda
 If this is a new project, guide me through stack selection before writing state.
 ```
 
+## Optional Python Helper
+
+VibeGuard includes two project-local Python helper scripts for deterministic checks:
+
+```sh
+python3 .vibeguard/bin/vibeguard-status.py
+python3 .vibeguard/bin/vibeguard-audit.py
+```
+
+These scripts use only the Python standard library. They do not install packages, modify shell profiles, create virtual environments, or add project runtime dependencies.
+
+`vibeguard-status.py` checks whether VibeGuard files and AI entry markers are present.
+
+`vibeguard-audit.py` inspects current git changes and flags likely governance risks, such as dependency manifests, lockfiles, installer files, CI workflows, AI entry files, or VibeGuard rule changes.
+
+If the current project does not already use Python, or if `python3` is unavailable, do not configure a Python environment silently. Explain that the helper is optional, ask the user before configuring a Python environment for VibeGuard, and record the approved interpreter command or path in `.vibeguard/state/project-commands.md`.
+
+If the helper cannot run, continue with the manual rule flow below.
+
 ## Normal Tasks
 
 Read in this order:
