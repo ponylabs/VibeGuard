@@ -13,6 +13,7 @@
 - user-approved: VibeGuard status/audit 先作为项目本地 Python 标准库辅助脚本交付，不做全局 CLI、不改 PATH、不新增第三方依赖。
 - user-approved: 如果客户项目本身不涉及 Python，AI 不能静默配置 Python 环境；需先解释、征得许可，并把获批解释器记录到 `.vibeguard/state/project-commands.md`。
 - user-approved: VibeGuard 完成门槛包含 state reconciliation；最终回复必须说明 state 更新结果或不更新原因。
+- user-approved: 中文本地化采用“用户可见内容中文化、机器可依赖 token 保持英文”的边界；证据标签、风险值、文件名和命令名不翻译，必要时使用中文标签加英文锚点。
 
 ## Dependency Decisions
 
@@ -31,6 +32,7 @@
 
 - observed-in-code: VibeGuard 支持 Codex、Claude Code、Cursor，以及 all 安装器，见 README.md 和 install/。
 - observed-in-code: VibeGuard 支持英文和中文模板；英文是默认安装语言，见 README.md。
+- observed-in-code: 中文模板标题使用中文加英文锚点，例如 `任务流程（Task Flow）` 和 `风险等级（Risk）`，见 templates/zh/.vibeguard/。
 - user-approved: 采用半自动 release/tag 流程；推送 `v*` tag 后由 GitHub Actions 先运行 shell 语法检查、Python helper 语法检查、installer tests 和 helper tests，再创建 GitHub Release。
 
 ## Rejected Options

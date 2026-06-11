@@ -41,30 +41,30 @@ def main() -> int:
     installed_entries = [item for item in ENTRY_FILES if has_managed_block(root / item)]
 
     status = "ok" if not missing and installed_entries else "attention needed"
-    print(f"VibeGuard status: {status}")
+    print(f"VibeGuard 状态（status）：{status}")
     print()
 
-    print("Core files:")
+    print("核心文件（Core files）：")
     for item in REQUIRED_FILES:
         state = "present" if (root / item).is_file() else "missing"
         print(f"- {item}: {state}")
 
     print()
-    print("Entries:")
+    print("入口文件（Entries）：")
     for item in ENTRY_FILES:
         state = "installed" if has_managed_block(root / item) else "missing"
         print(f"- {item}: {state}")
 
     ci_file = root / ".github/workflows/ci.yml"
     print()
-    print("Automation:")
+    print("自动化（Automation）：")
     print(f"- CI workflow: {'present' if ci_file.is_file() else 'missing'}")
     print(f"- Python helper: available ({Path(sys.executable).name})")
 
     if missing or not installed_entries:
         print()
-        print("Next:")
-        print("- Read .vibeguard/README.md and repair missing files or entry wiring.")
+        print("下一步（Next）：")
+        print("- 读取 .vibeguard/README.md，并修复缺失文件或入口配置。")
         return 1
 
     return 0

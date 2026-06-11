@@ -14,6 +14,7 @@
 - observed-in-code: 安装器支持 `--update` 安全刷新已有项目中的 VibeGuard 模板文件并保留既有 state，见 install/installer.template.sh。
 - observed-in-code: 本仓库根目录 `.vibeguard/` 已通过 `--update --lang zh` 刷新，并包含项目本地辅助脚本，见 .vibeguard/README.md 和 .vibeguard/bin/。
 - observed-in-code: VibeGuard audit 会在项目行为、工具、文档、测试或治理变化但没有 state 改动时提示 state review，见 templates/<lang>/.vibeguard/bin/vibeguard-audit.py。
+- observed-in-code: 中文模板会汉化面向用户的标题、说明、安装器帮助和辅助脚本提示，同时保留 `user-approved`、文件路径、命令名、`low/medium/high` 等稳定英文 token，见 README.zh-CN.md 和 templates/zh/.vibeguard/README.md。
 
 ## Runtime And Environment
 

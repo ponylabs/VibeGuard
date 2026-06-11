@@ -35,6 +35,14 @@ python3 .vibeguard/bin/vibeguard-audit.py
 
 如果辅助脚本无法运行，请继续使用下面的手动规则流程。
 
+## 语言约定
+
+中文模板中，面向用户的标题、说明和脚本提示使用中文。
+
+证据标签、风险值、文件名、命令、marker 和其他机器可依赖 token 保持英文，例如 `user-approved`、`observed-in-code`、`verified-by-command`、`low/medium/high`、`.vibeguard/state/` 和 `<!-- VIBEGUARD:START -->`。
+
+必要时使用“中文标签（English anchor）”格式，例如“风险等级（Risk）”，兼顾中文可读性和 AI agent 的稳定理解。
+
 ## 更新 VibeGuard
 
 当 VibeGuard 发布新版本后，可以在项目根目录重新运行对应安装器，并传入 `--update` 来刷新本项目的 VibeGuard。
