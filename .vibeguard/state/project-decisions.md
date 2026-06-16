@@ -14,6 +14,7 @@
 - user-approved: 如果客户项目本身不涉及 Python，AI 不能静默配置 Python 环境；需先解释、征得许可，并把获批解释器记录到 `.vibeguard/state/project-commands.md`。
 - user-approved: VibeGuard 完成门槛包含 state reconciliation；最终回复必须说明 state 更新结果或不更新原因。
 - user-approved: 中文本地化采用“用户可见内容中文化、机器可依赖 token 保持英文”的边界；证据标签、风险值、文件名和命令名不翻译，必要时使用中文标签加英文锚点。
+- user-approved: 已安装项目中的 `.vibeguard/` 是封闭治理工作区；agent 不得主动新增 `.vibeguard/` 文件，自定义 state 文件也不允许。新的 VibeGuard 文件只能来自未来模板发布和 `--update`。
 
 ## Dependency Decisions
 
@@ -26,6 +27,7 @@
 - observed-in-code: 安装器 update 模式通过 tests/installers_test.sh 覆盖，包含保留 state、刷新 rules/bin、补缺失 state、schema 版本报告、dry-run 和 help。
 - observed-in-code: VibeGuard helper 与 README 指引通过 tests/vibeguard_cli_test.sh 覆盖。
 - observed-in-code: audit 的 state review 提醒通过 tests/vibeguard_cli_test.sh 覆盖，包含未更新 state 时提醒、已更新 state 时不提醒。
+- observed-in-code: audit 会把 allowlist 外新增的 `.vibeguard/` 文件标为 high risk，见 templates/<lang>/.vibeguard/bin/vibeguard-audit.py 和 tests/vibeguard_cli_test.sh。
 - observed-in-code: shell 脚本静态检查使用 `sh -n`。
 
 ## Product Or Delivery Decisions

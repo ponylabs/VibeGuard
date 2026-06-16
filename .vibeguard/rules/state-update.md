@@ -34,6 +34,10 @@ state 是提示账本，不是真理来源。
 - 人类批准的架构、依赖、工具或产品决策：`.vibeguard/state/project-decisions.md`
 - 未解决风险、验证缺口、测试缺口、后续事项：`.vibeguard/state/open-items.md`
 
+`.vibeguard/` 是封闭工作区。不要在 `.vibeguard/` 下新增文件，包括新的 state 文件、notes、plans、scratchpads、snapshots、logs 或 summaries。
+
+如果信息无法放入以上官方文件，请在交付说明中报告，不要创建新文件。新的 VibeGuard 文件只能来自未来的 VibeGuard 模板版本和 `--update`。
+
 不要把通用规则写入 state 文件。
 
 ## 证据标签
@@ -91,6 +95,7 @@ state 是提示账本，不是真理来源。
 - 应该写入哪个 state 文件
 - 是否应替换旧条目，而不是追加
 - 是否与代码、配置、依赖、测试或 CI 冲突
+- 是否没有创建新的 `.vibeguard/` 文件
 
 如果答案不清楚，不要写入 state；在交付中简短说明即可。
 
