@@ -38,6 +38,25 @@ ENTRY_FILES = {
     ".cursor/rules/vibeguard.mdc",
 }
 
+ALLOWED_VIBEGUARD_FILES = {
+    ".vibeguard/README.md",
+    ".vibeguard/bootstrap.md",
+    ".vibeguard/bin/vibeguard-audit.py",
+    ".vibeguard/bin/vibeguard-status.py",
+    ".vibeguard/rules/change-area.md",
+    ".vibeguard/rules/dependency-check.md",
+    ".vibeguard/rules/final-check.md",
+    ".vibeguard/rules/state-update.md",
+    ".vibeguard/rules/task-flow.md",
+    ".vibeguard/rules/test-plan.md",
+    ".vibeguard/state/.schema-version",
+    ".vibeguard/state/open-items.md",
+    ".vibeguard/state/project-commands.md",
+    ".vibeguard/state/project-decisions.md",
+    ".vibeguard/state/project-info.md",
+    ".vibeguard/state/state-index.md",
+}
+
 STATE_REVIEW_PREFIXES = (
     ".github/workflows/",
     ".vibeguard/rules/",
@@ -83,6 +102,8 @@ def classify(path: str) -> Tuple[str, str]:
         return "high", "lockfile changed"
     if name in DEPENDENCY_FILES:
         return "high", "dependency manifest changed"
+    if path.startswith(".vibeguard/") and path not in ALLOWED_VIBEGUARD_FILES:
+        return "high", "unapproved VibeGuard file"
     if path.startswith(".vibeguard/rules/"):
         return "high", "governance rules changed"
     if path in ENTRY_FILES:

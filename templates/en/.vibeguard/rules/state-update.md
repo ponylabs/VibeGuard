@@ -34,6 +34,10 @@ Write content to the matching file:
 - human-approved architecture, dependency, tool, or product decisions: `.vibeguard/state/project-decisions.md`
 - unresolved risks, verification gaps, test gaps, follow-ups: `.vibeguard/state/open-items.md`
 
+`.vibeguard/` is a closed workspace. Do not create new files under `.vibeguard/`, including new state files, notes, plans, scratchpads, snapshots, logs, or summaries.
+
+If information does not fit one of the official files above, report it in the handoff instead of creating a new file. New VibeGuard files can only arrive from a future VibeGuard template release and `--update`.
+
 Do not write general rules into state files.
 
 ## Evidence Labels
@@ -91,6 +95,7 @@ Before updating state, confirm:
 - the target state file is clear
 - old entries should be replaced instead of appended
 - the entry does not conflict with code, config, dependencies, tests, or CI
+- no new `.vibeguard/` file is being created
 
 If unclear, do not write state. Mention it briefly in handoff instead.
 

@@ -35,6 +35,14 @@ python3 .vibeguard/bin/vibeguard-audit.py
 
 如果辅助脚本无法运行，请继续使用下面的手动规则流程。
 
+## VibeGuard 工作区边界
+
+不要在 `.vibeguard/` 下新增文件。
+
+AI agent 只能更新已有官方文件。项目事实、决策、命令、风险和后续事项必须写入 `.vibeguard/state/state-index.md` 列出的既有 `.vibeguard/state/` 文件。
+
+如果信息无法放入既有文件，请在交付说明中报告，不要创建新的 `.vibeguard/` 文件。新的 VibeGuard 文件只能来自未来的 VibeGuard 模板版本和 `--update`。
+
 ## 语言约定
 
 中文模板中，面向用户的标题、说明和脚本提示使用中文。

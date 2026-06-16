@@ -118,6 +118,38 @@ test_zh_audit_script_uses_chinese_labels_with_stable_tokens() {
   assert_contains "$out" 'package-lock.json: lockfile changed'
 }
 
+test_audit_flags_unapproved_vibeguard_files_as_high_risk() {
+  project=$(make_project en)
+  out="$TMP_ROOT/unapproved-vibeguard-file.out"
+  commit_project_baseline "$project"
+
+  (
+    cd "$project"
+    printf 'agent notes\n' > .vibeguard/state/notes.md
+    "$PYTHON" .vibeguard/bin/vibeguard-audit.py > "$out"
+  )
+
+  assert_contains "$out" 'VibeGuard audit: attention needed'
+  assert_contains "$out" 'Risk: high'
+  assert_contains "$out" '.vibeguard/state/notes.md: unapproved VibeGuard file'
+}
+
+test_zh_audit_flags_unapproved_vibeguard_files_as_high_risk() {
+  project=$(make_project zh)
+  out="$TMP_ROOT/zh-unapproved-vibeguard-file.out"
+  commit_project_baseline "$project"
+
+  (
+    cd "$project"
+    printf 'agent notes\n' > .vibeguard/notes.md
+    "$PYTHON" .vibeguard/bin/vibeguard-audit.py > "$out"
+  )
+
+  assert_contains "$out" 'VibeGuard 审计（audit）：attention needed'
+  assert_contains "$out" '风险等级（Risk）：high'
+  assert_contains "$out" '.vibeguard/notes.md: unapproved VibeGuard file'
+}
+
 test_audit_recommends_state_review_for_project_knowledge_changes() {
   project=$(make_project en)
   out="$TMP_ROOT/state-review.out"
@@ -179,6 +211,8 @@ test_readmes_explain_python_helper_and_permission_boundary() {
   assert_contains "$zh_readme" '语言约定'
   assert_contains "$zh_readme" 'user-approved'
   assert_contains "$zh_readme" 'low/medium/high'
+  assert_contains "$en_readme" 'Do not create new files under `.vibeguard/`'
+  assert_contains "$zh_readme" '不要在 `.vibeguard/` 下新增文件'
 }
 
 test_readmes_explain_update_mode() {
@@ -219,6 +253,8 @@ test_status_script_reports_template_setup
 test_zh_status_script_uses_chinese_labels_with_stable_tokens
 test_audit_script_flags_dependency_and_lock_changes
 test_zh_audit_script_uses_chinese_labels_with_stable_tokens
+test_audit_flags_unapproved_vibeguard_files_as_high_risk
+test_zh_audit_flags_unapproved_vibeguard_files_as_high_risk
 test_audit_recommends_state_review_for_project_knowledge_changes
 test_zh_audit_recommends_state_review_with_chinese_label_and_anchor
 test_audit_skips_state_review_when_state_changed

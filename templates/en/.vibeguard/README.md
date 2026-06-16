@@ -35,6 +35,14 @@ If the current project does not already use Python, or if `python3` is unavailab
 
 If the helper cannot run, continue with the manual rule flow below.
 
+## VibeGuard Workspace Boundary
+
+Do not create new files under `.vibeguard/`.
+
+AI agents may update the existing official files only. Project-specific facts, decisions, commands, risks, and follow-ups must fit into the existing `.vibeguard/state/` files listed in `.vibeguard/state/state-index.md`.
+
+If information does not fit the existing files, report it in the handoff instead of creating a new `.vibeguard/` file. New VibeGuard files can only arrive from a future VibeGuard template release and `--update`.
+
 ## Updating VibeGuard
 
 To refresh VibeGuard in this project after a new release, re-run the matching installer with `--update` from the project root.

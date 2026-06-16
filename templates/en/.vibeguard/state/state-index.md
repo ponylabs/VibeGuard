@@ -19,6 +19,15 @@ Then read relevant files based on the current task:
 
 Do not read all state files by default.
 
+Do not create new files under `.vibeguard/state/` or anywhere else under `.vibeguard/`. This state directory has a closed file set:
+
+- `.vibeguard/state/.schema-version`
+- `.vibeguard/state/state-index.md`
+- `.vibeguard/state/project-info.md`
+- `.vibeguard/state/project-commands.md`
+- `.vibeguard/state/project-decisions.md`
+- `.vibeguard/state/open-items.md`
+
 If state conflicts with code, dependency manifests, config, tests, CI, or current user instruction, trust project reality and report that state may be stale.
 
 ## File Map
@@ -36,3 +45,4 @@ If state conflicts with code, dependency manifests, config, tests, CI, or curren
 - Keep entries short, usually 1-2 lines.
 - Prefer updating or deleting stale entries over appending forever.
 - Each entry should include an evidence label, such as `user-approved`, `observed-in-code`, `verified-by-test`, `verified-by-command`, or `unresolved-risk`.
+- Do not add custom state files. If the official files are insufficient, report the gap in the handoff.

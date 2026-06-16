@@ -19,6 +19,15 @@
 
 不要默认通读所有 state 文件。
 
+不要在 `.vibeguard/state/` 或 `.vibeguard/` 下新增文件。本 state 目录是封闭文件集合：
+
+- `.vibeguard/state/.schema-version`
+- `.vibeguard/state/state-index.md`
+- `.vibeguard/state/project-info.md`
+- `.vibeguard/state/project-commands.md`
+- `.vibeguard/state/project-decisions.md`
+- `.vibeguard/state/open-items.md`
+
 如果 state 与代码、依赖清单、配置、测试、CI 或当前用户指令冲突，信任项目现实，并报告 state 可能已经过期。
 
 ## 文件用途
@@ -36,3 +45,4 @@
 - 条目保持简短，通常 1-2 行。
 - 优先更新或删除过期条目，不要无限追加。
 - 每条内容应包含证据标签，例如 `user-approved`、`observed-in-code`、`verified-by-test`、`verified-by-command`、`unresolved-risk`。
+- 不要新增自定义 state 文件。如果官方文件不足以承载信息，请在交付说明中报告缺口。
